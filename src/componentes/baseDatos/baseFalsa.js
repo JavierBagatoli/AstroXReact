@@ -1,3 +1,4 @@
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
 export const baseDatos = [{
     id:0,
     nombre : "Javier",
@@ -34,21 +35,21 @@ export const baseDatos = [{
         fechaLimite: ""
     }],
     tareasConcluidas : [{
-        id: 1,
+        id: 4,
         nombre: "Caminars",
         descripcion: "",
         fechaCreacion: "",
         fechaCompletdo: "",
         fechaLimite: ""
     },{
-        id: 2,
+        id: 5,
         nombre: "Dormirs",
         descripcion: "",
         fechaCreacion: "",
         fechaCompletdo: "",
         fechaLimite: ""
     },{
-        id: 3,
+        id: 6,
         nombre: "Mirar el cielos",
         descripcion: "",
         fechaCreacion: "",

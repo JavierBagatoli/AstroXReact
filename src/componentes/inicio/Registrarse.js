@@ -39,11 +39,10 @@ const Registrarse = ({handleLogin}) => {
             texto = "Mail no valido, solo usar letras y espacios"
 
         }else{
-            datos.map(persona => {
-                if (persona.mail === mailRef.current.value){
-                    texto = "Mail ya ocupado"
-                }             
-            })
+            let existeMail = false;
+            existeMail = datos.find(persona => persona.mail === mailRef.current.value)
+            if (existeMail !== false)
+                {texto = "Mail ya ocupado"}
         }
 
         if (!entradaValida(apellidoRef.current.value)){

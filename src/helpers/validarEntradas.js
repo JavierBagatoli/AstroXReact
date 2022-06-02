@@ -1,3 +1,4 @@
+//Codigo por Javier Bagatol, 21/05/2022
 export function entradaValida(entrada){
     if (entrada.length < 3){
         return false
