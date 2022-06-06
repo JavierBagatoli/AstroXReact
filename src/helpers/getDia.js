@@ -30,7 +30,7 @@ export const meses = [
 
 
 function diaTexto(){
-    return `${dias[numeroDia]} ${numDia}, de ${meses[numMes]}`
+    return `${dias[numeroDia]} ${numDia} de ${meses[numMes]}`
 }
 
 export function colorTexto(){

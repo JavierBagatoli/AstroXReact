@@ -5,9 +5,15 @@ import TarjetaCompletada from './TarjetaCompletada'
 
 const ListaTarjetas = ({tipo, tareas, funcionBoton}) => {
   return (
-    <div className='card articulo'>
-        <h1 className='card-header'>Tareas pendientes</h1>
-        <div className='card-body'>
+    <div className='articulo'>
+        <h1 className=''>
+            {
+                tipo? "Tareas completas":  "Tareas pendientes"
+            }
+            
+            
+            </h1>
+        <div className=''>
             {tipo 
             ?(
                tareas.map(tareaCompleta =>

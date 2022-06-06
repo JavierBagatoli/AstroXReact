@@ -20,15 +20,14 @@ const IniciarSesion = ({handleLogin}) => {
             texto = "Mail no valido"
         }
         setRetroAlimentacion(texto)
-
         if(texto === ""){
-            datos.map(persona => {
-                if (persona.nombre === mailRef.current.value){
-                    if (persona.contrasenia === passwordRef.current.value){
-                        handleLogin(persona.id)
-                    }
+            let personaIdentificada =datos.find(persona => persona.nombre === mailRef.current.value)
+            if (personaIdentificada !== undefined){
+                if (personaIdentificada.contrasenia === passwordRef.current.value){
+                    console.log(personaIdentificada.id)
+                     handleLogin(personaIdentificada.id)
                 }
-            })
+            }
         }
     }
   return (

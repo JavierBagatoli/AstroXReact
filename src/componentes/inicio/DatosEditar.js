@@ -1,9 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { entradaValida } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
 
-const Registrarse = ({handleLogin}) => {
+const initialEmpleado = {
+    nombre: "test",
+    apellido: "test2",
+    mail: "testMail",
+    pais: "ArgentinaTest",
+    puesto: "test",
+    edad: "-1",
+    contrasenia: "test"
+}
+
+const DatosEditar = ({empleado, handleLogin}) => {
     const [retroalimentacionTexto, setRetroalimentacionTexto] = useState("")
+    const [datosEmpleado, setDatosEmpleado] = useState(empleado)
 
     const nombreRef = useRef("")
     const apellidoRef = useRef("")
@@ -17,8 +28,21 @@ const Registrarse = ({handleLogin}) => {
 
     let datos = baseDatos;
 
+    useEffect(() => {
+        nombreRef.current.value = datosEmpleado.nombre;
+        apellidoRef.current.value = datosEmpleado.apellido;
+        mailRef.current.value = datosEmpleado.mail;
+        paisRef.current.value = datosEmpleado.pais;
+        puestoRef.current.value = datosEmpleado.puesto;
+        edadRef.current.value = datosEmpleado.edad;
+        passwordRef.current.value = datosEmpleado.contrasenia;
+        passwordRepRef.current.value = datosEmpleado.contrasenia;
+    }, [datosEmpleado])
+    
+
     const validar = () => {
         let texto = ""
+
         if (passwordRef.current.value !== passwordRepRef.current.value){
             texto = "Las contraseñas no son iguales";
         }
@@ -53,17 +77,18 @@ const Registrarse = ({handleLogin}) => {
         setRetroalimentacionTexto(texto)
 
         if (texto === ""){
+            alert("hola")
             let empleado = {
-                id: Date.now(),
+                id: datosEmpleado.id,
                 nombre: nombreRef.current.value,
                 apellido: apellidoRef.current.value,
                 mail:mailRef.current.value,
                 pais: paisRef.current.value,
                 puesto: paisRef.current.value,
                 password: passwordRef.current.value,
-                entorno : [],
-                tareas: [],
-                tareasConcluidas : []
+                entorno : datosEmpleado.entorno,
+                tareas: datosEmpleado.tareas,
+                tareasConcluidas : datosEmpleado.tareasConcluidas
             }
             baseDatos.push(empleado);
             console.log(datos);
@@ -72,11 +97,10 @@ const Registrarse = ({handleLogin}) => {
         }
         
     }
-
   return (
     <div>
         <div className='articulo login card'>
-            <h1 className='card-header text-center'>Registrarse</h1>
+            <h1 className='card-header text-center'>Datos</h1>
                 <div className='card-body list-group'>
                     <input ref={nombreRef} className="input-agregar-tarea" type="text" placeholder="Nombre"/>
                     <input ref={apellidoRef} className="input-agregar-tarea" type="text" placeholder="Apellido"/>
@@ -86,7 +110,7 @@ const Registrarse = ({handleLogin}) => {
                     <input ref={edadRef} className="input-agregar-tarea" type="number" placeholder="Edad" min="18" max="80"/>
                     <input ref={passwordRef} className="input-agregar-tarea" type="password" placeholder="Contraseña"/>
                     <input ref={passwordRepRef} className="input-agregar-tarea" type="password" placeholder="Repita la contraseña"/>
-                    <button onClick={() => validar()} className="boton  boton-centrar">Agregar</button>
+                    <button onClick={() => validar()} className="boton  boton-centrar">Modificar</button>
                     <p ref={retroAlimentacion} className="c7">{retroalimentacionTexto}</p>
                         
                 </div>
@@ -95,4 +119,4 @@ const Registrarse = ({handleLogin}) => {
   )
 }
 
-export default Registrarse
+export default DatosEditar

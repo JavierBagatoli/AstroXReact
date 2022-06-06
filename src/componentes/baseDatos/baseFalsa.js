@@ -62,6 +62,7 @@ export const baseDatos = [{
     nombre : "Paki",
     contrasenia: "123",
     edad : 21,
+    mail: "Paki",
     puesto : "Asistente",
     entorno : [
         "https://www.google.com"
