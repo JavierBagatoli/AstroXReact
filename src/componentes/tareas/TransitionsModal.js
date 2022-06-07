@@ -52,7 +52,8 @@ export default function TransitionsModal({funcionBoton}) {
       <Button 
         variant="contained"
         color='primary'
-        onClick={handleOpen}>Crear tarea</Button>
+        onClick={handleOpen}
+        >Crear tarea</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -7,6 +7,7 @@ body{
     margin : 0px;
     font-family: sans-serif;
 }
+/*
 .estilo-nav{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -15,10 +16,14 @@ body{
     max-height: 60px;
     background: linear-gradient(90deg, rgb(130 89 94) 0%, rgb(148 45 59) 35%, rgb(101 28 39) 100%);
 }
-
+*/
+.gradiente{
+    background: linear-gradient(90deg, rgb(130 89 94) 0%, rgb(148 45 59) 35%, rgb(101 28 39) 100%); 
+}
+/*
 .estilo-nav h1{
     margin-left: 10px;
-}
+}*/
 h2{
     color: white;
 }

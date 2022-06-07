@@ -7,7 +7,7 @@ const Tarjeta = ({tarea, funcionBoton}) => {
     <div className='item-tarea'>
         <p>{tarea.nombre}</p>
         <button onClick={() => funcionBoton(tarea)} className='boton-tarea' title="Completará la tarea">
-          <img className='svg' src={CheckSVG}></img>  
+          <img className='svg' src={CheckSVG} alt="Terminar" title="Terminar"></img>  
         </button>
     </div>
   )
