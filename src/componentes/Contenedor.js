@@ -10,6 +10,7 @@ import Registrarse from './inicio/Registrarse'
 import ListaTarjetas from './ListaTarjetas'
 import Navbar from './Navbar'
 import Titulo from './Titulo'
+import Button from '@mui/material/Button'
 
 const initialTareas = baseDatos[0].tareas;
 const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
@@ -121,8 +122,10 @@ const Contenedor = () => {
             accion0={mostrarTareas}
             accion1={configuarEmpleado}
             accion2={cerrarSesion}/>
-        <p onClick={() => handleLogin(0)}>cambiar</p>
-        
+        <Button 
+            variant="contained"
+            color='primary'
+            onClick={() => handleLogin(0)}>cambiar</Button>
         <Titulo sesionIniciada={sesionIniciada}/>
         <div className='containerAstro'>
         {sesionIniciada

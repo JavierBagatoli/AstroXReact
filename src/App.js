@@ -1,6 +1,6 @@
 import React from 'react'
 import Contenedor from "./componentes/Contenedor";
-import Navbar from "./componentes/Navbar";
+import Button from '@mui/material/Button'
 
 function App() {
   return (
