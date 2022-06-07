@@ -1,3 +1,4 @@
+import React from 'react'
 import Contenedor from "./componentes/Contenedor";
 import Navbar from "./componentes/Navbar";
 

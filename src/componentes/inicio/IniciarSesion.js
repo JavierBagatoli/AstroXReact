@@ -24,8 +24,7 @@ const IniciarSesion = ({handleLogin}) => {
             let personaIdentificada =datos.find(persona => persona.nombre === mailRef.current.value)
             if (personaIdentificada !== undefined){
                 if (personaIdentificada.contrasenia === passwordRef.current.value){
-                    console.log(personaIdentificada.id)
-                     handleLogin(personaIdentificada.id)
+                    handleLogin(personaIdentificada.id)
                 }
             }
         }

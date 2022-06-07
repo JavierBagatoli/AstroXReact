@@ -12,7 +12,7 @@ const initialEmpleado = {
     contrasenia: "test"
 }
 
-const DatosEditar = ({empleado, handleLogin}) => {
+const DatosEditar = ({empleado, handleEditar}) => {
     const [retroalimentacionTexto, setRetroalimentacionTexto] = useState("")
     const [datosEmpleado, setDatosEmpleado] = useState(empleado)
 
@@ -65,7 +65,8 @@ const DatosEditar = ({empleado, handleLogin}) => {
             let existeMail;
             existeMail = datos.find(persona => persona.mail === mailRef.current.value)
             if (existeMail !== undefined)
-                {texto = "Mail ya ocupado"}
+                {if (existeMail !== empleado)
+                     texto = "Mail ya ocupado"}
         }
 
         if (!entradaValida(apellidoRef.current.value)){
@@ -90,10 +91,9 @@ const DatosEditar = ({empleado, handleLogin}) => {
                 tareas: datosEmpleado.tareas,
                 tareasConcluidas : datosEmpleado.tareasConcluidas
             }
-            baseDatos.push(empleado);
-            console.log(datos);
+            console.log("Datos nuevos" , empleado);
             setRetroalimentacionTexto("Agregado");
-            handleLogin(empleado.id);
+            handleEditar(empleado);
         }
         
     }

@@ -1,8 +1,7 @@
-//Codigo creado por Javier Bagatoli el dia 02/06/2022
 import React from 'react'
 import Tarjeta from './Tarjeta'
 import TarjetaCompletada from './TarjetaCompletada'
-
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
 const ListaTarjetas = ({tipo, tareas, funcionBoton}) => {
   return (
     <div className='articulo'>
