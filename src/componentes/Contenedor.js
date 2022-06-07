@@ -1,3 +1,5 @@
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
+
 import React, { useCallback, useEffect, useState } from 'react'
 import { baseDatos } from './baseDatos/baseFalsa'
 import CuerpoCentral from './CuerpoCentral'
@@ -6,8 +8,8 @@ import DatosEditar from './inicio/DatosEditar'
 import IniciarSesion from './inicio/IniciarSesion'
 import Registrarse from './inicio/Registrarse'
 import ListaTarjetas from './ListaTarjetas'
+import Navbar from './Navbar'
 import Titulo from './Titulo'
-//Codigo creado por Javier Bagatoli el dia 02/06/2022
 
 const initialTareas = baseDatos[0].tareas;
 const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
@@ -18,6 +20,7 @@ const Contenedor = () => {
     const [empleado, setEmpleado] = useState(-1)
     const [tareas, setTareas] = useState(initialTareas)
     const [tareasCompletas, setTareasCompletas] = useState(initialTareasCompeltas)
+    const [pagina, setPagina] = useState("")
 
     const handleLogin = (number) =>{
         setSesionIniciada(true);
@@ -81,7 +84,8 @@ const Contenedor = () => {
         return (
             <>
                 <Registrarse handleLogin={handleLogin}/>
-                <div></div>
+                <div>
+                </div>
                 <IniciarSesion handleLogin={handleLogin}/>
             </>
         )
@@ -101,14 +105,29 @@ const Contenedor = () => {
         )
     }
 
+    const cerrarSesion = () => {
+        setSesionIniciada(false)
+    }
+    const configuarEmpleado = () => {
+        setPagina("configuarEmpleado")
+    }
+    const mostrarTareas = () => {
+        setPagina("mostrarTareas")
+    }
+
   return (
     <div >
+        <Navbar
+            accion0={mostrarTareas}
+            accion1={configuarEmpleado}
+            accion2={cerrarSesion}/>
         <p onClick={() => handleLogin(0)}>cambiar</p>
+        
         <Titulo sesionIniciada={sesionIniciada}/>
         <div className='containerAstro'>
         {sesionIniciada
             ?
-                menuUsuario()
+                pagina === "configuarEmpleado" ? menuUsuario()  :menuTareas()
             :
                 menuIniciar()
         }

@@ -156,19 +156,19 @@ li{
     padding: 5px;
     border-radius: 15px;
     border-style:solid;
-    grid-column: 3;
     grid-row: 1;
-    
 }
 
-.boton-eliminar-tarea{
+
+.boton-tarea, .boton-tarea-descompletar,.boton-eliminar-tarea{
     color: white;
     background-color: rgb(48, 38, 43, 0.5);
     padding: 5px;
-    border-radius: 15px;
     border-style:solid;
-    grid-column: 2;
     grid-row: 1;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
 }
 
 .input-agregar-tarea{
@@ -234,4 +234,9 @@ p{
 
 .login{
     grid-row: 2;
+}
+.svg{
+    height: 18px;
+    -webkit-filter: invert(100%);
+    margin: 3px;
 }
