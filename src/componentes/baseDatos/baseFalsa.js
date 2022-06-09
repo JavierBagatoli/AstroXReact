@@ -9,30 +9,32 @@ export const baseDatos = [{
     edad : 22,
     puesto : "Ingeniero",
     entorno : [
-        "https://calendar.google.com/calendar/u/0/r",
-        "http://localhost:8080/api/v1/Empleados"
+        { id: 0,
+          direccion:  "https://calendar.google.com/calendar/u/0/r"},
+        { id: 1,
+          direccion: "http://localhost:8080/api/v1/Empleados"}
     ],
     tareas : [{
         id: 1,
         nombre: "Caminar",
-        descripcion: "",
-        fechaCreacion: "",
-        fechaCompletdo: "",
-        fechaLimite: ""
+        descripcion: "Esto es descripción",
+        fechaCreacion: "33",
+        fechaCompletdo: "22",
+        fechaLimite: "11"
     },{
         id: 2,
         nombre: "Dormir",
-        descripcion: "",
-        fechaCreacion: "",
-        fechaCompletdo: "",
-        fechaLimite: ""
+        descripcion: "Esto es descripción2",
+        fechaCreacion: "2",
+        fechaCompletdo: "4",
+        fechaLimite: "55"
     },{
         id: 3,
         nombre: "Mirar el cielo",
-        descripcion: "",
-        fechaCreacion: "",
-        fechaCompletdo: "",
-        fechaLimite: ""
+        descripcion: "Esto es descripción3",
+        fechaCreacion: "2",
+        fechaCompletdo: "3",
+        fechaLimite: "4"
     }],
     tareasConcluidas : [{
         id: 4,
@@ -65,7 +67,8 @@ export const baseDatos = [{
     mail: "Paki",
     puesto : "Asistente",
     entorno : [
-        "https://www.google.com"
+        { id: 0,
+          direccion: "https://www.google.com"}
     ],
     tareas : [
         "Caminar", "Limpieza", "Revision de calculos"

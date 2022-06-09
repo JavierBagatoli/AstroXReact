@@ -9,10 +9,10 @@ const TarjetaCompletada = ({tarea, funcionBoton, funcionEliminar}) => {
     <div  className='item-tarea'>
         <p>{tarea.nombre}</p>
         <button onClick={() => funcionEliminar(tarea)} className='boton-eliminar-tarea' title="Eliminar Permanente" alt="Eliminar">
-          <img className="svg" src={EliminarSVG}></img>
+          <img className="svg" src={EliminarSVG} alt="Eliminar"></img>
         </button>
         <button onClick={() => funcionBoton(tarea)} className='boton-tarea' title="Descompletar" alt="Eliminar">
-          <img className="svg" src={LapizSVG}></img>
+          <img className="svg" src={LapizSVG} alt="Descompletar"></img>
         </button>
     </div>
   )

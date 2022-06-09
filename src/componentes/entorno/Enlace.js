@@ -3,7 +3,7 @@ import React from 'react'
 const Enlace = ({enlace}) => {
   return (
     <>
-        <p className="boton-tarea">${enlace}</p>
+        <p className="p-enlaces">{enlace.direccion}</p>
     </>
 
   )

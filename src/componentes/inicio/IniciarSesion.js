@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { entradaValida } from '../../helpers/validarEntradas'
-import { baseDatos } from '../baseDatos/baseFalsa'
 
-const datos = baseDatos;
 
 const IniciarSesion = ({handleLogin}) => {
     const [retroAlimentacion, setRetroAlimentacion] = useState("")
@@ -21,13 +19,9 @@ const IniciarSesion = ({handleLogin}) => {
         }
         setRetroAlimentacion(texto)
         if(texto === ""){
-            let personaIdentificada =datos.find(persona => persona.nombre === mailRef.current.value)
-            if (personaIdentificada !== undefined){
-                if (personaIdentificada.contrasenia === passwordRef.current.value){
-                    handleLogin(personaIdentificada.id)
-                }
+                handleLogin(mailRef.current.value, passwordRef.current.value)
             }
-        }
+        
     }
   return (
     <article>

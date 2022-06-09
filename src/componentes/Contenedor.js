@@ -1,6 +1,6 @@
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { baseDatos } from './baseDatos/baseFalsa'
 import CuerpoCentral from './CuerpoCentral'
 import FormularioEntorno from './entorno/FormularioEntorno'
@@ -10,7 +10,6 @@ import Registrarse from './inicio/Registrarse'
 import ListaTarjetas from './ListaTarjetas'
 import Navbar from './Navbar'
 import Titulo from './Titulo'
-import Button from '@mui/material/Button'
 
 const initialTareas = baseDatos[0].tareas;
 const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
@@ -23,10 +22,17 @@ const Contenedor = () => {
     const [tareasCompletas, setTareasCompletas] = useState(initialTareasCompeltas)
     const [pagina, setPagina] = useState("")
 
-    const handleLogin = (number) =>{
-        setSesionIniciada(true);
-        setEmpleado(number)
-        console.log(empleado)
+    const handleLogin = (mail, password) =>{
+        let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
+            console.log("persona identificada:" , personaIdentificada)
+            if (personaIdentificada !== undefined){
+                if (personaIdentificada.contrasenia === password){
+                    setSesionIniciada(true);
+                    let idEnBaseDeDatos = baseDeDatos.findIndex( empleado => empleado.id === personaIdentificada.id )
+                    setEmpleado(idEnBaseDeDatos)
+                    console.log(baseDeDatos)
+                    }
+                }
     }
 
     const completarTarea = useCallback((tarea) => {
@@ -59,7 +65,7 @@ const Contenedor = () => {
     },[tareas])
 
     const editarUsuario = (empleadoEditado) => {
-        let baseDatosNueva = baseDatos.filter(empleado => empleado.id !== empleadoEditado.id)
+        let baseDatosNueva = baseDeDatos.filter(empleado => empleado.id !== empleadoEditado.id)
         baseDatosNueva = [...baseDatosNueva, empleadoEditado]
         setBaseDeDatos(baseDatosNueva)
         console.log(baseDatosNueva)
@@ -93,7 +99,7 @@ const Contenedor = () => {
     }
 
     const menuUsuario = () =>{
-        let Empleado = baseDatos[empleado]
+        let Empleado = baseDeDatos[empleado]
         return(
             <>
                 <DatosEditar
@@ -108,6 +114,8 @@ const Contenedor = () => {
 
     const cerrarSesion = () => {
         setSesionIniciada(false)
+        setEmpleado(-1)
+        handleNavbar()
     }
     const configuarEmpleado = () => {
         setPagina("configuarEmpleado")
@@ -116,16 +124,19 @@ const Contenedor = () => {
         setPagina("mostrarTareas")
     }
 
+    const handleNavbar = () => {
+        return (<>
+            <Navbar
+                empleado={empleado}
+                accion0={mostrarTareas}
+                accion1={configuarEmpleado}
+                accion2={cerrarSesion}/>
+        </>)
+    }
+    
   return (
     <div >
-        <Navbar
-            accion0={mostrarTareas}
-            accion1={configuarEmpleado}
-            accion2={cerrarSesion}/>
-        <Button 
-            variant="contained"
-            color='primary'
-            onClick={() => handleLogin(0)}>cambiar</Button>
+        {handleNavbar()}
         <Titulo sesionIniciada={sesionIniciada}/>
         <div className='containerAstro'>
         {sesionIniciada

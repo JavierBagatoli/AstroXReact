@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { entradaValida } from '../../helpers/validarEntradas'
+import { entradaValida, constraseñaValida } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
 
 const Registrarse = ({handleLogin}) => {
@@ -22,11 +22,11 @@ const Registrarse = ({handleLogin}) => {
         if (passwordRef.current.value !== passwordRepRef.current.value){
             texto = "Las contraseñas no son iguales";
         }
-        if (!entradaValida(passwordRepRef.current.value)){
-            texto = "Password repetido no valido, solo usar letras y espacios"
+        if (!constraseñaValida(passwordRepRef.current.value)){
+            texto = "Password repetido no valido, debe contener al menos 8 caracteres"
         }
-        if (!entradaValida(passwordRef.current.value)){
-            texto = "Password no valido, solo usar letras y espacios"
+        if (!constraseñaValida(passwordRef.current.value)){
+            texto = "Password no valido, debe contener al menos 8 caracteres"
         }
         if (!entradaValida(puestoRef.current.value)){
             texto = "Puesto no valido, solo usar letras y espacios"
@@ -60,7 +60,7 @@ const Registrarse = ({handleLogin}) => {
                 mail:mailRef.current.value,
                 pais: paisRef.current.value,
                 puesto: paisRef.current.value,
-                password: passwordRef.current.value,
+                contrasenia: passwordRef.current.value,
                 entorno : [],
                 tareas: [],
                 tareasConcluidas : []
@@ -75,19 +75,19 @@ const Registrarse = ({handleLogin}) => {
 
   return (
     <div>
-        <div className='articulo login card'>
-            <h1 className='card-header text-center'>Registrarse</h1>
-                <div className='card-body list-group'>
-                    <input ref={nombreRef} className="input-agregar-tarea" type="text" placeholder="Nombre"/>
-                    <input ref={apellidoRef} className="input-agregar-tarea" type="text" placeholder="Apellido"/>
-                    <input ref={mailRef} className="input-agregar-tarea" type="text" placeholder="Mail"/>
-                    <input ref={paisRef} className="input-agregar-tarea" type="text" placeholder="Pais"/>
-                    <input ref={puestoRef} className="input-agregar-tarea" type="text" placeholder="Puesto"/>
-                    <input ref={edadRef} className="input-agregar-tarea" type="number" placeholder="Edad" min="18" max="80"/>
-                    <input ref={passwordRef} className="input-agregar-tarea" type="password" placeholder="Contraseña"/>
-                    <input ref={passwordRepRef} className="input-agregar-tarea" type="password" placeholder="Repita la contraseña"/>
-                    <button onClick={() => validar()} className="boton  boton-centrar">Agregar</button>
-                    <p ref={retroAlimentacion} className="c7">{retroalimentacionTexto}</p>
+        <div className='articulo login'>
+            <h1 className=''>Registrarse</h1>
+                <div className='columna'>
+                    <input ref={nombreRef} className="input-agregar-tarea c1" type="text" placeholder="Nombre"/>
+                    <input ref={apellidoRef} className="input-agregar-tarea c2" type="text" placeholder="Apellido"/>
+                    <input ref={mailRef} className="input-agregar-tarea c3" type="text" placeholder="Mail"/>
+                    <input ref={paisRef} className="input-agregar-tarea c4" type="text" placeholder="Pais"/>
+                    <input ref={puestoRef} className="input-agregar-tarea c5" type="text" placeholder="Puesto"/>
+                    <input ref={edadRef} className="input-agregar-tarea c6" type="number" placeholder="Edad" min="18" max="80"/>
+                    <input ref={passwordRef} className="input-agregar-tarea c7" type="password" placeholder="Contraseña"/>
+                    <input ref={passwordRepRef} className="input-agregar-tarea c8" type="password" placeholder="Repita la contraseña"/>
+                    <button onClick={() => validar()} className="boton  boton-centrar c9">Agregar</button>
+                    <p ref={retroAlimentacion} className="c10">{retroalimentacionTexto}</p>
                         
                 </div>
         </div>

@@ -15,3 +15,10 @@ export function entradaValida(entrada){
 function noEsLetra(caracter){
     return ((caracter <= 64 || caracter >= 91) && (caracter <= 96 || caracter >= 123) && (caracter !== 32))
 }
+
+export function constraseñaValida(constraseña){
+    if (constraseña.length < 8){
+        return false
+    }
+    return true
+}

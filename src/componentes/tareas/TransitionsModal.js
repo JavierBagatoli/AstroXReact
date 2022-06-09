@@ -6,9 +6,7 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField'
-import { red } from '@mui/material/colors';
-
-const color = red[500];
+import { entradaValida } from '../../helpers/validarEntradas'
 
 const style = {
   position: 'absolute',
@@ -27,22 +25,32 @@ export default function TransitionsModal({funcionBoton}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [tareaValida, setTareaValida] = useState(true)
  
   const nombreRef = useRef("");
   const fechaRef = useRef("");
+  const descripcionRef = useRef("");
 
   const handleCrearTarea = () => {
-    let nuevaTarea = {
-      id: Date.now(),
-      nombre: nombreRef.current.value,
-      descripcion: "",
-      fechaCreacion: fechaRef.current.value,
-      fechaCompletdo: "",
-      fechaLimite: ""
-  }
-  console.log(nombreRef)
-  console.log(nuevaTarea)
-  funcionBoton(nuevaTarea)
+    let diaActual = new  Date(Date.now());
+    let nombreValido = entradaValida(nombreRef.current.value);
+    let descripcionValida = entradaValida(descripcionRef.current.value);
+    if (nombreValido && descripcionValida){
+        setTareaValida(true)
+        let nuevaTarea = {
+          id: Date.now(),
+          nombre: nombreRef.current.value,
+          descripcion: descripcionRef.current.value,
+          fechaCreacion: Date.now(),
+          fechaCompletdo: "",
+          fechaLimite: fechaRef.current.valueAsNumber,
+      }
+      funcionBoton(nuevaTarea)
+      handleClose()
+    }else{
+      setTareaValida(false)
+    }
   }
 
 
@@ -50,7 +58,7 @@ export default function TransitionsModal({funcionBoton}) {
   return (
     <div>
       <Button 
-        variant="contained"
+        className='boton'
         color='primary'
         onClick={handleOpen}
         >Crear tarea</Button>
@@ -66,28 +74,30 @@ export default function TransitionsModal({funcionBoton}) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style} color="primary">
+          <Box sx={style} className="modal">
             <Typography 
               id="transition-modal-title" 
               variant="h6" 
               component="h2" 
-              color="primary">
+              >
                 Agregar Tarea
-            </Typography>
-            <Typography 
-              id="transition-modal-description" 
-              sx={{ mt: 2 }} 
-              color="primary">
-                Nombre tarea
             </Typography>
             <TextField
                 inputRef={nombreRef}
                 id="parent-modal-input-nombre"
-                label="Nombre tarea"             
+                label="Nombre tarea"  
+                sx={{ mb: 2 }} 
+                className='input-moda'         
+              />
+            <TextField
+                inputRef={descripcionRef}
+                id="parent-modal-input-nombre"
+                label="Descripción"
+                className='input-moda'
+                          
               />
             <Typography 
               id="transition-modal-fecha-finalizacion" 
-              color="primary" 
               sx={{ mt: 2 }}>
                 Fecha finalizacion
               </Typography>
@@ -96,11 +106,17 @@ export default function TransitionsModal({funcionBoton}) {
               ref={fechaRef}
               ></input>
             <Button 
-              variant='contained'
-              onClick={() => (
-                handleCrearTarea(),
-                handleClose())}
-              >Crear</Button>
+              onClick={() => {
+                handleCrearTarea()}}
+              className="boton">Crear</Button>
+              {
+                !tareaValida &&
+                <Typography 
+                id="transition-modal-fecha-finalizacion" 
+                sx={{ mt: 2 }}>
+                  Tanto el nombre como descripcion tienen que solo contener letras
+                </Typography>
+              }
             </Box>
         </Fade>
       </Modal>

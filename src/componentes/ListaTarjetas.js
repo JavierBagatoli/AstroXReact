@@ -1,7 +1,8 @@
-import React from 'react'
-import Tarjeta from './Tarjeta'
-import TarjetaCompletada from './TarjetaCompletada'
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
+import React from 'react'
+import TarjetaCompletada from './TarjetaCompletada'
+import TarjetaInfo from './tareas/TarjetaInfo'
+
 const ListaTarjetas = ({tipo, tareas, funcionBoton}) => {
   return (
     <div className='articulo'>
@@ -28,10 +29,11 @@ const ListaTarjetas = ({tipo, tareas, funcionBoton}) => {
                )
             :(
                 tareas.map(tarea =>
-                    <Tarjeta
+                    <TarjetaInfo
                         key={tarea.id}
                         tarea={tarea}
-                        funcionBoton={funcionBoton}/>
+                        funcionBoton={funcionBoton}
+                    />
                 )
             )
 
