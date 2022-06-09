@@ -68,7 +68,7 @@ export default function TarjetaInfo({tarea, funcionBoton}) {
               <Typography 
               id="transition-modal-fecha-finalizacion"  
               sx={{ mt: 2 }}>
-                Fecha Creacion: {creacion}
+                Fecha Creación: {creacion}
               </Typography>
               <Typography 
               id="transition-modal-fecha-finalizacion" 
@@ -78,7 +78,7 @@ export default function TarjetaInfo({tarea, funcionBoton}) {
               <Typography 
               id="transition-modal-fecha-finalizacion"  
               sx={{ mt: 2 }}>
-                Fecha limite: {limite}
+                Fecha límite: {limite}
               </Typography>
             <Button 
               sx={{ mt: 2 }}

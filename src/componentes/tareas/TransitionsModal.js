@@ -74,11 +74,12 @@ export default function TransitionsModal({funcionBoton}) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style} className="modal">
+          <Box sx={style} className="modal columna">
             <Typography 
               id="transition-modal-title" 
               variant="h6" 
-              component="h2" 
+              component="h2"
+              className="c1"
               >
                 Agregar Tarea
             </Typography>
@@ -87,28 +88,29 @@ export default function TransitionsModal({funcionBoton}) {
                 id="parent-modal-input-nombre"
                 label="Nombre tarea"  
                 sx={{ mb: 2 }} 
-                className='input-moda'         
+                className='input-moda c2'         
               />
             <TextField
                 inputRef={descripcionRef}
                 id="parent-modal-input-nombre"
                 label="Descripción"
-                className='input-moda'
+                className='input-moda c3'
                           
               />
             <Typography 
               id="transition-modal-fecha-finalizacion" 
-              sx={{ mt: 2 }}>
-                Fecha finalizacion
+              sx={{ mt: 2 }}
+              className="c4">
+                Fecha finalización
               </Typography>
             <input 
               type={"date"}
               ref={fechaRef}
-              ></input>
+              className="c5"/>
             <Button 
               onClick={() => {
                 handleCrearTarea()}}
-              className="boton">Crear</Button>
+              className="boton c6">Crear</Button>
               {
                 !tareaValida &&
                 <Typography 
