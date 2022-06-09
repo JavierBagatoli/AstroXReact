@@ -33,7 +33,6 @@ export default function TransitionsModal({funcionBoton}) {
   const descripcionRef = useRef("");
 
   const handleCrearTarea = () => {
-    let diaActual = new  Date(Date.now());
     let nombreValido = entradaValida(nombreRef.current.value);
     let descripcionValida = entradaValida(descripcionRef.current.value);
     if (nombreValido && descripcionValida){
@@ -110,7 +109,11 @@ export default function TransitionsModal({funcionBoton}) {
             <Button 
               onClick={() => {
                 handleCrearTarea()}}
-              className="boton c6">Crear</Button>
+              className="boton c6 verde">Crear</Button>
+              <Button 
+              onClick={() => {
+                handleClose()}}
+              className="boton c7 rojo">Cerrar</Button>
               {
                 !tareaValida &&
                 <Typography 
