@@ -22,3 +22,24 @@ export function constraseñaValida(constraseña){
     }
     return true
 }
+
+export function mailValido(mail){
+    //const mail = "juan@gmail.com"
+    if (mail.length < 5 ){
+        return false
+    }
+    let arrobaPos = mail.indexOf("@");
+    if (arrobaPos === -1){
+        return false;
+    }
+    let ultimoPunto = mail.lastIndexOf(".")
+    if (ultimoPunto === -1){
+        return false;
+    }
+
+    if(arrobaPos > ultimoPunto){
+        return false
+    }
+
+    return true
+}

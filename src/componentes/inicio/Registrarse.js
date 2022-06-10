@@ -1,5 +1,6 @@
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
 import React, { useRef, useState } from 'react'
-import { entradaValida, constraseñaValida } from '../../helpers/validarEntradas'
+import { entradaValida, constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
 
 const Registrarse = ({handleLogin}) => {
@@ -23,10 +24,10 @@ const Registrarse = ({handleLogin}) => {
             texto = "Las contraseñas no son iguales";
         }
         if (!constraseñaValida(passwordRepRef.current.value)){
-            texto = "Password repetido no valido, debe contener al menos 8 caracteres"
+            texto = "Contraseña repetida no valido, debe contener al menos 8 caracteres"
         }
         if (!constraseñaValida(passwordRef.current.value)){
-            texto = "Password no valido, debe contener al menos 8 caracteres"
+            texto = "Contraseña no valida, debe contener al menos 8 caracteres"
         }
         if (!entradaValida(puestoRef.current.value)){
             texto = "Puesto no valido, solo usar letras y espacios"
@@ -34,7 +35,7 @@ const Registrarse = ({handleLogin}) => {
         if (!entradaValida(paisRef.current.value)){
             texto = "Pais no valido, solo usar letras y espacios"
         }
-        if (!entradaValida(mailRef.current.value)){
+        if (!mailValido(mailRef.current.value)){
             texto = "Mail no valido, solo usar letras y espacios"
 
         }else{
@@ -87,7 +88,12 @@ const Registrarse = ({handleLogin}) => {
                     <input ref={passwordRef} className="input-agregar-tarea c7" type="password" placeholder="Contraseña"/>
                     <input ref={passwordRepRef} className="input-agregar-tarea c8" type="password" placeholder="Repita la contraseña"/>
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Agregar</button>
-                    <p ref={retroAlimentacion} className="c10">{retroalimentacionTexto}</p>
+                    {retroalimentacionTexto !== "" &&
+                     (
+                      retroalimentacionTexto === "Datos modificados" 
+                        ? <p ref={retroAlimentacion} className="verde c10">{retroalimentacionTexto}</p>
+                        : <p ref={retroAlimentacion} className="rojo c10">{retroalimentacionTexto}</p>
+                    )}
                         
                 </div>
         </div>

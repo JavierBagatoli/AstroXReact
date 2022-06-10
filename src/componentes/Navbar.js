@@ -10,7 +10,7 @@ const Navbar = ({empleado, accion0, accion1, accion2}) => {
 
   const funcionesUsuario = () => {
     return (<>
-      <Grid container ml={10} item xs={5}>
+      <Grid container ml={10} item xs={6}>
         <Grid item xs={2}>
           <Typography m={2} className="navbar-brand texto-nav grid-item-tareas" variant="h5" color="initial" onClick={() => accion0()}>Tareas</Typography>
         </Grid>
@@ -27,7 +27,7 @@ const Navbar = ({empleado, accion0, accion1, accion2}) => {
   const handlerNavbar = () => {
     return(<>
     
-           <Grid xs={5}>
+           <Grid>
             <Typography m={2} className="navbar-brand texto-nav grid-item-astroX" variant="h4" color="initial">Astro X</Typography>
           </Grid>
           {(empleado !== -1) &&
@@ -42,7 +42,7 @@ const Navbar = ({empleado, accion0, accion1, accion2}) => {
         backgroundColor: 'primary.dark',}}
         bgcolor="secondary"
         className="gradiente">
-        <Grid container spacing={1} xs={10}>
+        <Grid container spacing={1}>
         
               {handlerNavbar()}    
         </Grid>            

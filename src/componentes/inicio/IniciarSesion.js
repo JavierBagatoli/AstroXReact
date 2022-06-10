@@ -1,5 +1,6 @@
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
 import React, { useRef, useState } from 'react'
-import { entradaValida } from '../../helpers/validarEntradas'
+import { constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 
 
 const IniciarSesion = ({handleLogin}) => {
@@ -8,15 +9,16 @@ const IniciarSesion = ({handleLogin}) => {
     const mailRef = useRef("")
     const passwordRef = useRef("")
 
+    console.log(retroAlimentacion)
     const validar = () => {
         let texto = ""
 
-        //if(!entradaValida(passwordRef.current.value)){
-        //    texto = "Password no valida"
+        //if(!constraseñaValida(passwordRef.current.value)){
+        //    texto = "Contraseña  invalida, debe tener al menos 8 caracteres"
         //}
-        if(!entradaValida(mailRef.current.value)){
-            texto = "Mail no valido"
-        }
+        //if(!mailValido(mailRef.current.value)){
+        //    texto = "Mail no valido"
+        //}
         setRetroAlimentacion(texto)
         if(texto === ""){
                 handleLogin(mailRef.current.value, passwordRef.current.value)
@@ -31,7 +33,10 @@ const IniciarSesion = ({handleLogin}) => {
                 <input ref={mailRef} className="input-agregar-tarea c1" type="mail" placeholder="Mail"/>
                 <input ref={passwordRef} className="input-agregar-tarea c2" type="password" placeholder="Contraseña"/>
                 <button onClick={() => validar()} id="boton-iniciar-sesion" className="boton c3 boton-centrar">Iniciar sesión</button>
-                <p id="retroalimentacionInicioSesion" className="c4">{retroAlimentacion}</p>
+                {retroAlimentacion !== "" &&
+                      (retroAlimentacion === "Datos modificados" 
+                        ? <p className="verde c10">{retroAlimentacion}</p>
+                        : <p className="rojo c10">{retroAlimentacion}</p>)}
             </div>
         </div>
     </article>

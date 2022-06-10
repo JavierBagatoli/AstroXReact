@@ -2,12 +2,12 @@
 import React from 'react'
 import TransitionsModal from './tareas/TransitionsModal'
 
-const CuerpoCentral = ({funcionBoton}) => {
+const CuerpoCentral = ({funcionBoton, handleAbrirEntorno}) => {
 
   return (
     <div className='container'>
       <section className='centrar'>
-        <button className='boton-ambito-trabajo'>Ámbiente de trabajo</button>
+        <button onClick={handleAbrirEntorno} className='boton-ambito-trabajo'>Ámbiente de trabajo</button>
           <article className='container'>
               <TransitionsModal
                 funcionBoton={funcionBoton}

@@ -1,5 +1,7 @@
+//Codigo creado por Javier Bagatoli el dia 08/06/2022
+
 import React, { useEffect, useRef, useState } from 'react'
-import { entradaValida, constraseñaValida } from '../../helpers/validarEntradas'
+import { entradaValida, constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
 
 //const initialEmpleado = {
@@ -47,10 +49,10 @@ const DatosEditar = ({empleado, handleEditar}) => {
             texto = "Las contraseñas no son iguales";
         }
         if (!constraseñaValida(passwordRepRef.current.value)){
-            texto = "Password repetido no valido, solo usar letras y espacios"
+            texto = "Contraseña repetida no valido, solo usar letras y espacios"
         }
         if (!constraseñaValida(passwordRef.current.value)){
-            texto = "Password no valido, solo usar letras y espacios"
+            texto = "Contraseña  no valida, solo usar letras y espacios"
         }
         if (!entradaValida(puestoRef.current.value)){
             texto = "Puesto no valido, solo usar letras y espacios"
@@ -58,7 +60,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
         if (!entradaValida(paisRef.current.value)){
             texto = "Pais no valido, solo usar letras y espacios"
         }
-        if (!entradaValida(mailRef.current.value)){
+        if (!mailValido(mailRef.current.value)){
             texto = "Mail no valido, solo usar letras y espacios"
 
         }else{
@@ -91,8 +93,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
                 tareas: datosEmpleado.tareas,
                 tareasConcluidas : datosEmpleado.tareasConcluidas
             }
-            console.log("Datos nuevos" , empleado);
-            setRetroalimentacionTexto("Agregado");
+            setRetroalimentacionTexto("Datos modificados");
             handleEditar(empleado);
         }
         
@@ -111,7 +112,13 @@ const DatosEditar = ({empleado, handleEditar}) => {
                     <input ref={passwordRef} className="input-agregar-tarea c7" type="password" placeholder="Contraseña"/>
                     <input ref={passwordRepRef} className="input-agregar-tarea c8" type="password" placeholder="Repita la contraseña"/>
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Modificar</button>
-                    <p ref={retroAlimentacion} className="c10">{retroalimentacionTexto}</p>
+                    {retroalimentacionTexto !== "" &&
+                     (
+                        retroalimentacionTexto === "Datos modificados" 
+                            ? <p ref={retroAlimentacion} className="verde c10">{retroalimentacionTexto}</p>
+                            : <p ref={retroAlimentacion} className="rojo c10">{retroalimentacionTexto}</p>
+                    )}
+                    
                         
                 </div>
         </div>

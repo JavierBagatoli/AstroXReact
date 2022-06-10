@@ -263,6 +263,10 @@ a:before{
 }
 .verde{
     background-color: #1a3f21 !important;
+    padding: 5px;
+    border-radius: 15px;
+    border-style: solid;
+    border-color: #3f1a2b;
 }
 a h2:hover{
     color:#3f1a2b;

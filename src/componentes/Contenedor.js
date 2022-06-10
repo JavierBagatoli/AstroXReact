@@ -24,13 +24,11 @@ const Contenedor = () => {
 
     const handleLogin = (mail, password) =>{
         let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
-            console.log("persona identificada:" , personaIdentificada)
             if (personaIdentificada !== undefined){
                 if (personaIdentificada.contrasenia === password){
                     setSesionIniciada(true);
                     let idEnBaseDeDatos = baseDeDatos.findIndex( empleado => empleado.id === personaIdentificada.id )
                     setEmpleado(idEnBaseDeDatos)
-                    console.log(baseDeDatos)
                     }
                 }
     }
@@ -64,12 +62,17 @@ const Contenedor = () => {
         setTareas(nuevasTareas)
     },[tareas])
 
-    const editarUsuario = (empleadoEditado) => {
+    const editarUsuario = useCallback((empleadoEditado) => {
         let baseDatosNueva = baseDeDatos.filter(empleado => empleado.id !== empleadoEditado.id)
         baseDatosNueva = [...baseDatosNueva, empleadoEditado]
         setBaseDeDatos(baseDatosNueva)
-        console.log(baseDatosNueva)
-    }
+    }, [baseDeDatos])
+
+    const handleAbrirEntorno = useCallback(() =>{
+        baseDeDatos[empleado].entorno.map(
+            entornoEmpleado => window.open(entornoEmpleado.direccion)
+        )
+    }, [empleado, baseDeDatos])
 
     const menuTareas = () =>{
         return (
@@ -79,7 +82,8 @@ const Contenedor = () => {
                     tareas={tareas}
                     funcionBoton={completarTarea}/>
                 <CuerpoCentral
-                    funcionBoton={crearTarea}/>
+                    funcionBoton={crearTarea}
+                    handleAbrirEntorno={handleAbrirEntorno}/>
                 <ListaTarjetas 
                     tipo={eliminarTarea}
                     tareas={tareasCompletas}

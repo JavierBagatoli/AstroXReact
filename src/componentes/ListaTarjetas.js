@@ -8,7 +8,7 @@ const ListaTarjetas = ({tipo, tareas, funcionBoton}) => {
     <div className='articulo'>
         <h1 className=''>
             {
-                tipo? "Tareas completas":  "Tareas pendientes"
+                tipo? "Tareas completadas":  "Tareas pendientes"
             }
             
             
