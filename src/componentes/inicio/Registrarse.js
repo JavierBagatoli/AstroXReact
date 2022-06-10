@@ -90,7 +90,7 @@ const Registrarse = ({handleLogin}) => {
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Agregar</button>
                     {retroalimentacionTexto !== "" &&
                      (
-                      retroalimentacionTexto === "Datos modificados" 
+                      retroalimentacionTexto === "Agregado" 
                         ? <p ref={retroAlimentacion} className="verde c10">{retroalimentacionTexto}</p>
                         : <p ref={retroAlimentacion} className="rojo c10">{retroalimentacionTexto}</p>
                     )}

@@ -23,7 +23,9 @@ const Contenedor = () => {
     const [pagina, setPagina] = useState("")
 
     const handleLogin = (mail, password) =>{
+        console.log(mail, password)
         let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
+        console.log("datos: " , personaIdentificada)
             if (personaIdentificada !== undefined){
                 if (personaIdentificada.contrasenia === password){
                     setSesionIniciada(true);

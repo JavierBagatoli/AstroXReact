@@ -1,6 +1,6 @@
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
 import React, { useRef, useState } from 'react'
-import { constraseñaValida, mailValido } from '../../helpers/validarEntradas'
+//import { constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 
 
 const IniciarSesion = ({handleLogin}) => {
