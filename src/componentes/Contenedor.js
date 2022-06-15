@@ -11,6 +11,8 @@ import ListaTarjetas from './ListaTarjetas'
 import Navbar from './Navbar'
 import Titulo from './Titulo'
 
+const bcrypt = require('bcryptjs');
+
 const initialTareas = baseDatos[0].tareas;
 const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
 
@@ -27,7 +29,7 @@ const Contenedor = () => {
         let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
         console.log("datos: " , personaIdentificada)
             if (personaIdentificada !== undefined){
-                if (personaIdentificada.contrasenia === password){
+                if (bcrypt.compareSync(password, personaIdentificada.contrasenia)){
                     setSesionIniciada(true);
                     let idEnBaseDeDatos = baseDeDatos.findIndex( empleado => empleado.id === personaIdentificada.id )
                     setEmpleado(idEnBaseDeDatos)

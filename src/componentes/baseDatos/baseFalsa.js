@@ -5,7 +5,7 @@ export const baseDatos = [{
     apellido: "Bagatoli",
     mail: "Javier",
     pais: "Argentina",
-    contrasenia: "123",
+    contrasenia: "$2a$10$aGTYmz84817rUEtYscWYbu.Pbmn3EqFtuDa6OhKjuIMxoBmOWI.t2",
     edad : 22,
     puesto : "Ingeniero",
     entorno : [

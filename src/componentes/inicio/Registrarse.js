@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react'
 import { entradaValida, constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
+const bcrypt = require('bcryptjs');
 
 const Registrarse = ({handleLogin}) => {
     const [retroalimentacionTexto, setRetroalimentacionTexto] = useState("")
@@ -35,6 +36,24 @@ const Registrarse = ({handleLogin}) => {
         if (!entradaValida(paisRef.current.value)){
             texto = "Pais no valido, solo usar letras y espacios"
         }
+        if (edadRef.current.valueAsNumber > 0){
+            const nacimiento = new Date(edadRef.current.valueAsNumber);
+            const hoy = new Date();
+            const nacimientoAño = nacimiento.getFullYear()
+            const hoyAño = hoy.getFullYear()
+            const nacimientoMes = nacimiento.getMonth()
+            const hoyMes = hoy.getMonth()
+            const nacimientoDia = nacimiento.getDate()
+            const hoyDia = hoy.getDate()
+            alert(hoyAño + " " + nacimientoAño)
+            if (hoyAño - nacimientoAño < 18){
+                texto = "Faltan Años para que la fecha sea valida"}
+            if (hoyMes - nacimientoMes < 0 && texto === ""){
+                texto = "Faltan meses para que la fecha sea valida"}
+            if (hoyDia - nacimientoDia < 0 && texto === ""){
+                texto = "Faltan Dias para que la fecha sea valida"}
+        }
+
         if (!mailValido(mailRef.current.value)){
             texto = "Mail no valido, solo usar letras y espacios"
 
@@ -52,16 +71,20 @@ const Registrarse = ({handleLogin}) => {
             texto = "Nombre no valido, solo usar letras y espacios"
         }
         setRetroalimentacionTexto(texto)
+        setTimeout(() => setRetroalimentacionTexto(""),4000)
 
         if (texto === ""){
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(passwordRef.current.value, salt);
             let empleado = {
                 id: Date.now(),
                 nombre: nombreRef.current.value,
                 apellido: apellidoRef.current.value,
                 mail:mailRef.current.value,
                 pais: paisRef.current.value,
-                puesto: paisRef.current.value,
-                contrasenia: passwordRef.current.value,
+                puesto: puestoRef.current.value,
+                contrasenia: hash,
+                edad: edadRef.current.valueAsNumber,
                 entorno : [],
                 tareas: [],
                 tareasConcluidas : []
@@ -79,14 +102,47 @@ const Registrarse = ({handleLogin}) => {
         <div className='articulo login'>
             <h1 className=''>Registrarse</h1>
                 <div className='columna'>
-                    <input ref={nombreRef} className="input-agregar-tarea c1" type="text" placeholder="Nombre"/>
-                    <input ref={apellidoRef} className="input-agregar-tarea c2" type="text" placeholder="Apellido"/>
-                    <input ref={mailRef} className="input-agregar-tarea c3" type="text" placeholder="Mail"/>
-                    <input ref={paisRef} className="input-agregar-tarea c4" type="text" placeholder="Pais"/>
-                    <input ref={puestoRef} className="input-agregar-tarea c5" type="text" placeholder="Puesto"/>
-                    <input ref={edadRef} className="input-agregar-tarea c6" type="number" placeholder="Edad" min="18" max="80"/>
-                    <input ref={passwordRef} className="input-agregar-tarea c7" type="password" placeholder="Contraseña"/>
-                    <input ref={passwordRepRef} className="input-agregar-tarea c8" type="password" placeholder="Repita la contraseña"/>
+                    <div className='c1'>
+                        <label >Nombre:</label>
+                        <input ref={nombreRef} className="input-agregar-tarea" type="text" placeholder="Nombre"/>
+                    </div>
+                    <div className='c2'>
+                        <label>Apellido:</label>
+                        <input ref={apellidoRef} className="input-agregar-tarea" type="text" placeholder="Apellido"/>
+                    </div>
+                    <div className='c3'>
+                        <label>Mail:</label>
+                        <input ref={mailRef} className="input-agregar-tarea" type="email" placeholder="Mail" pattern=".+@+.com" size="30" required/>
+                    </div>
+                    <div className='c4'>
+                        <label>Puesto:</label>
+                        <input ref={puestoRef} className="input-agregar-tarea" type="text" placeholder="Puesto"/>
+                    </div>
+                    <div className='c5'>
+                        <label>Pais:</label>
+                        <select ref={paisRef} className="input-agregar-tarea">
+                            <option value="Argentina">Argentina</option>
+                            <option value="Chile">Chile</option>
+                        </select>
+                    </div>
+                    <div className='c6'>
+                        <label>Edad:</label>
+                        <input ref={edadRef} className="input-agregar-tarea" type="date"/>
+                    </div>
+                    <div className='c7'>
+                        <label>Constraseña:</label>
+                        <input ref={passwordRef} className="input-agregar-tarea" type="password" placeholder="Contraseña"/>
+                    </div>
+                    <div className='c8'>
+                        <label>Repita constraseña:</label>
+                        <input ref={passwordRepRef} className="input-agregar-tarea" type="password" placeholder="Repita la contraseña"/>
+                    </div>
+
+
+                    
+
+
+
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Agregar</button>
                     {retroalimentacionTexto !== "" &&
                      (

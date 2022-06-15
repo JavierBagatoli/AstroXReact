@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { entradaValida, constraseñaValida, mailValido } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
+const bcrypt = require('bcryptjs');
 
 //const initialEmpleado = {
 //    nombre: "test",
@@ -37,8 +38,8 @@ const DatosEditar = ({empleado, handleEditar}) => {
         paisRef.current.value = datosEmpleado.pais;
         puestoRef.current.value = datosEmpleado.puesto;
         edadRef.current.value = datosEmpleado.edad;
-        passwordRef.current.value = datosEmpleado.contrasenia;
-        passwordRepRef.current.value = datosEmpleado.contrasenia;
+        passwordRef.current.value = ("");
+        passwordRepRef.current.value = ("");
     }, [datosEmpleado])
     
 
@@ -48,10 +49,10 @@ const DatosEditar = ({empleado, handleEditar}) => {
         if (passwordRef.current.value !== passwordRepRef.current.value){
             texto = "Las contraseñas no son iguales";
         }
-        if (!constraseñaValida(passwordRepRef.current.value)){
+        if (!constraseñaValida(passwordRepRef.current.value)&& passwordRepRef.current.value !== ""){
             texto = "Contraseña repetida no valido, solo usar letras y espacios"
         }
-        if (!constraseñaValida(passwordRef.current.value)){
+        if (!constraseñaValida(passwordRef.current.value) && passwordRef.current.value !== ""){
             texto = "Contraseña  no valida, solo usar letras y espacios"
         }
         if (!entradaValida(puestoRef.current.value)){
@@ -78,7 +79,14 @@ const DatosEditar = ({empleado, handleEditar}) => {
             texto = "Nombre no valido, solo usar letras y espacios"
         }
         setRetroalimentacionTexto(texto)
-
+        setTimeout(() => setRetroalimentacionTexto(""),4000)
+        let hash
+        if(passwordRef.current.value !== ""){
+            var salt = bcrypt.genSaltSync(10);
+            hash = bcrypt.hashSync(passwordRef.current.value, salt);
+        }else{
+            hash = datosEmpleado.contrasenia
+        }
         if (texto === ""){
             let empleado = {
                 id: datosEmpleado.id,
@@ -88,7 +96,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
                 pais: paisRef.current.value,
                 puesto: paisRef.current.value,
                 edad : edadRef.current.value,
-                contrasenia: passwordRef.current.value,
+                contrasenia: hash,
                 entorno : datosEmpleado.entorno,
                 tareas: datosEmpleado.tareas,
                 tareasConcluidas : datosEmpleado.tareasConcluidas

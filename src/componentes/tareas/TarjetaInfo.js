@@ -56,7 +56,7 @@ export default function TarjetaInfo({tarea, funcionBoton}) {
           <Box sx={style} color="primary" className="modal">
             <Typography 
               id="transition-modal-title" 
-              variant="h6" 
+              variant="h4" 
               component="h2">
                 {tarea.nombre}
             </Typography>
