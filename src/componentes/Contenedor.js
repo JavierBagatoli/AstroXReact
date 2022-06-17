@@ -10,6 +10,7 @@ import Registrarse from './inicio/Registrarse'
 import ListaTarjetas from './ListaTarjetas'
 import Navbar from './Navbar'
 import Titulo from './Titulo'
+import Swal from 'sweetalert2'
 
 const bcrypt = require('bcryptjs');
 
@@ -19,20 +20,23 @@ const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
 const Contenedor = () => {
     const [sesionIniciada, setSesionIniciada] = useState(false)
     const [baseDeDatos, setBaseDeDatos] = useState(baseDatos)
-    const [empleado, setEmpleado] = useState(-1)
+    const [empleadoPos, setEmpleadoPos] = useState(-1)
     const [tareas, setTareas] = useState(initialTareas)
     const [tareasCompletas, setTareasCompletas] = useState(initialTareasCompeltas)
     const [pagina, setPagina] = useState("")
 
+    const handleRegistrar = (nuevoEmpleado) => {
+        let NuevaBaseDeDatos = [...baseDeDatos , nuevoEmpleado]
+        setBaseDeDatos(NuevaBaseDeDatos)
+    }
+
     const handleLogin = (mail, password) =>{
-        console.log(mail, password)
         let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
-        console.log("datos: " , personaIdentificada)
             if (personaIdentificada !== undefined){
                 if (bcrypt.compareSync(password, personaIdentificada.contrasenia)){
                     setSesionIniciada(true);
                     let idEnBaseDeDatos = baseDeDatos.findIndex( empleado => empleado.id === personaIdentificada.id )
-                    setEmpleado(idEnBaseDeDatos)
+                    setEmpleadoPos(idEnBaseDeDatos)
                     }
                 }
     }
@@ -70,13 +74,21 @@ const Contenedor = () => {
         let baseDatosNueva = baseDeDatos.filter(empleado => empleado.id !== empleadoEditado.id)
         baseDatosNueva = [...baseDatosNueva, empleadoEditado]
         setBaseDeDatos(baseDatosNueva)
+        setEmpleadoPos(baseDatosNueva.length-1)
     }, [baseDeDatos])
 
     const handleAbrirEntorno = useCallback(() =>{
-        baseDeDatos[empleado].entorno.map(
-            entornoEmpleado => window.open(entornoEmpleado.direccion)
+        const apertura = baseDeDatos[empleadoPos].entorno.filter(
+            entornoEmpleado => entornoEmpleado?.prioridad === true
         )
-    }, [empleado, baseDeDatos])
+        apertura.map(entornoEmpleado => window.open(entornoEmpleado.direccion))
+
+        Swal.fire({
+            title: 'EntornoAbierto',
+            icon: 'success',
+            confirmButtonText: 'Cool'
+          })
+    }, [empleadoPos, baseDeDatos])
 
     const menuTareas = () =>{
         return (
@@ -98,7 +110,7 @@ const Contenedor = () => {
     const menuIniciar = () => {
         return (
             <>
-                <Registrarse handleLogin={handleLogin}/>
+                <Registrarse handleRegistrar={handleRegistrar}/>
                 <div>
                 </div>
                 <IniciarSesion handleLogin={handleLogin}/>
@@ -106,23 +118,9 @@ const Contenedor = () => {
         )
     }
 
-    const menuUsuario = () =>{
-        let Empleado = baseDeDatos[empleado]
-        return(
-            <>
-                <DatosEditar
-                    empleado={Empleado}
-                    handleEditar={editarUsuario}/>
-                <div></div>
-                <FormularioEntorno
-                    empleado={Empleado}/>
-            </>
-        )
-    }
-
     const cerrarSesion = () => {
         setSesionIniciada(false)
-        setEmpleado(-1)
+        setEmpleadoPos(-1)
         handleNavbar()
     }
     const configuarEmpleado = () => {
@@ -135,12 +133,26 @@ const Contenedor = () => {
     const handleNavbar = () => {
         return (<>
             <Navbar
-                empleado={empleado}
+                empleado={baseDeDatos[empleadoPos]}
                 accion0={mostrarTareas}
                 accion1={configuarEmpleado}
                 accion2={cerrarSesion}/>
         </>)
     }
+
+    const menuUsuario = () =>{
+        let EmpleadoActivo = baseDeDatos[empleadoPos]
+        return(
+            <>
+                <DatosEditar
+                    empleado={EmpleadoActivo}
+                    handleEditar={editarUsuario}/>
+                <div></div>
+                <FormularioEntorno
+                    empleado={EmpleadoActivo}/>
+            </>
+        )
+        }
     
   return (
     <div >

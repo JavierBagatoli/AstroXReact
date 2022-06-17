@@ -1,15 +1,15 @@
 //Codigo por Javier Bagatol, 21/05/2022
-export function entradaValida(entrada){
+export function entradaValida(entrada, error){
     if (entrada.length < 3){
-        return false
+        return error
     }
     for (let letra in entrada){
         let caracter = entrada[letra].charCodeAt()
         if (noEsLetra(caracter)){
-            return false
+            return error
         }
     }
-    return true
+    return ""
 }
 
 function noEsLetra(caracter){
@@ -42,4 +42,25 @@ export function mailValido(mail){
     }
 
     return true
+}
+
+export function validarNacimiento(fecha){
+    let texto ="";
+    if (fecha > 0){
+        const nacimiento = new Date(fecha);
+        const hoy = new Date();
+        const nacimientoAño = nacimiento.getFullYear()
+        const hoyAño = hoy.getFullYear()
+        const nacimientoMes = nacimiento.getMonth()
+        const hoyMes = hoy.getMonth()
+        const nacimientoDia = nacimiento.getDate()
+        const hoyDia = hoy.getDate()
+        if (hoyAño - nacimientoAño < 18){
+            texto = "Faltan Años para que la fecha sea valida"}
+        if (hoyMes - nacimientoMes < 0 && texto === ""){
+            texto = "Faltan meses para que la fecha sea valida"}
+        if (hoyDia - nacimientoDia < 0 && texto === ""){
+            texto = "Faltan Dias para que la fecha sea valida"}
+    }
+    return texto;
 }

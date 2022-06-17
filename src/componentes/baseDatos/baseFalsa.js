@@ -10,9 +10,13 @@ export const baseDatos = [{
     puesto : "Ingeniero",
     entorno : [
         { id: 0,
-          direccion:  "https://calendar.google.com/calendar/u/0/r"},
+          apodo: "Calendario",
+          direccion:  "https://calendar.google.com/calendar/u/0/r",
+          prioridad: true},
         { id: 1,
-          direccion: "http://localhost:8080/api/v1/Empleados"}
+          apodo: "BackEnd",
+          direccion: "http://localhost:8080/api/v1/Empleados",
+          prioridad: false}
     ],
     tareas : [{
         id: 1,

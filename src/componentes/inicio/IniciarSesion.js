@@ -8,8 +8,7 @@ const IniciarSesion = ({handleLogin}) => {
 
     const mailRef = useRef("")
     const passwordRef = useRef("")
-
-    console.log(retroAlimentacion)
+    
     const validar = () => {
         let texto = ""
 

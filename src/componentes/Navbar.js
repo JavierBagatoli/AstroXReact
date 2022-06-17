@@ -1,38 +1,53 @@
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
-import React from 'react'
-import Typography from '@mui/material/Typography'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 
 const Navbar = ({empleado, accion0, accion1, accion2}) => { 
   
+  const [titular, setTitular] = useState("")
+  useEffect(() => {
+    if(empleado !== undefined){
+      setTitular(empleado?.puesto + " " + empleado?.apellido)
+    }else{
+      setTitular("")
+    }
+
+  }, [empleado])
 
   const funcionesUsuario = () => {
     return (<>
-      <Grid container ml={10} item xs={6}>
-        <Grid item xs={2}>
-          <Typography m={2} className="navbar-brand texto-nav grid-item-tareas" variant="h5" color="initial" onClick={() => accion0()}>Tareas</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Typography m={2} className="navbar-brand texto-nav grid-item-usuario" variant="h5" color="initial" onClick={() => accion1()}>Persona</Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography m={2} className="navbar-brand texto-nav grid-item-salir" variant="h5" color="initial" onClick={() => accion2()}>Salir</Typography>
-        </Grid>
-      </Grid>
+      <div className='grid-item-tareas'>
+        <h1 className="texto-nav aling-derecha" onClick={() => accion0()}>
+          Tareas
+        </h1>
+      </div>
+        
+      <div className="grid-item-usuario">
+        <h1 className="texto-nav aling-izquierda" onClick={() => accion1()}>
+          {titular}
+        </h1>
+      </div>
+      
+      <div className='grid-item-salir'>
+        <h1 className="texto-nav " onClick={() => accion2()}>
+          Salir
+        </h1>
+      </div>
     </>)
   }
 
   const handlerNavbar = () => {
     return(<>
-    
-           <Grid>
-            <Typography m={2} className="navbar-brand texto-nav grid-item-astroX" variant="h4" color="initial">Astro X</Typography>
-          </Grid>
-          {(empleado !== -1) &&
+        <div className='grid-navbar'>
+          <h1 className="texto-nav grid-item-astroX">
+            Astro X
+          </h1>
+          {(empleado !== undefined) &&
             funcionesUsuario()
           }
+        </div>
     </>)
   }
   return (

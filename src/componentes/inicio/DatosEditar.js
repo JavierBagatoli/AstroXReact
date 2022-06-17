@@ -1,8 +1,10 @@
 //Codigo creado por Javier Bagatoli el dia 08/06/2022
 
 import React, { useEffect, useRef, useState } from 'react'
-import { entradaValida, constraseñaValida, mailValido } from '../../helpers/validarEntradas'
+import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
+import Swal from 'sweetalert2'
+
 const bcrypt = require('bcryptjs');
 
 //const initialEmpleado = {
@@ -16,7 +18,6 @@ const bcrypt = require('bcryptjs');
 //}
 
 const DatosEditar = ({empleado, handleEditar}) => {
-    const [retroalimentacionTexto, setRetroalimentacionTexto] = useState("")
     let [datosEmpleado, setDatosEmpleado] = useState(empleado)
 
     const nombreRef = useRef("")
@@ -27,7 +28,6 @@ const DatosEditar = ({empleado, handleEditar}) => {
     const edadRef = useRef(0)
     const passwordRef = useRef("")
     const passwordRepRef = useRef("")
-    const retroAlimentacion = useRef("")
 
     let datos = baseDatos;
 
@@ -37,7 +37,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
         mailRef.current.value = datosEmpleado.mail;
         paisRef.current.value = datosEmpleado.pais;
         puestoRef.current.value = datosEmpleado.puesto;
-        edadRef.current.value = datosEmpleado.edad;
+        edadRef.current.valueAsNumber = datosEmpleado.edad;
         passwordRef.current.value = ("");
         passwordRepRef.current.value = ("");
     }, [datosEmpleado])
@@ -49,18 +49,18 @@ const DatosEditar = ({empleado, handleEditar}) => {
         if (passwordRef.current.value !== passwordRepRef.current.value){
             texto = "Las contraseñas no son iguales";
         }
-        if (!constraseñaValida(passwordRepRef.current.value)&& passwordRepRef.current.value !== ""){
+        if (!constraseñaValida(passwordRepRef.current.value) && passwordRepRef.current.value !== ""){
             texto = "Contraseña repetida no valido, solo usar letras y espacios"
         }
         if (!constraseñaValida(passwordRef.current.value) && passwordRef.current.value !== ""){
             texto = "Contraseña  no valida, solo usar letras y espacios"
         }
-        if (!entradaValida(puestoRef.current.value)){
-            texto = "Puesto no valido, solo usar letras y espacios"
-        }
-        if (!entradaValida(paisRef.current.value)){
-            texto = "Pais no valido, solo usar letras y espacios"
-        }
+        texto = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
+       
+        texto = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
+
+        texto = validarNacimiento(edadRef.current.valueAsNumber)
+
         if (!mailValido(mailRef.current.value)){
             texto = "Mail no valido, solo usar letras y espacios"
 
@@ -72,21 +72,27 @@ const DatosEditar = ({empleado, handleEditar}) => {
                      texto = "Mail ya ocupado"}
         }
 
-        if (!entradaValida(apellidoRef.current.value)){
-            texto = "Apellido no valido, solo usar letras y espacios"
-        }
-        if (!entradaValida(nombreRef.current.value)){
-            texto = "Nombre no valido, solo usar letras y espacios"
-        }
-        setRetroalimentacionTexto(texto)
-        setTimeout(() => setRetroalimentacionTexto(""),4000)
+        texto = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
+
+        texto = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
+
+        Swal.fire({
+            title: 'Actualización fallida',
+            text: texto,
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+          })
+
         let hash
+
         if(passwordRef.current.value !== ""){
             var salt = bcrypt.genSaltSync(10);
             hash = bcrypt.hashSync(passwordRef.current.value, salt);
         }else{
             hash = datosEmpleado.contrasenia
         }
+
+
         if (texto === ""){
             let empleado = {
                 id: datosEmpleado.id,
@@ -101,7 +107,12 @@ const DatosEditar = ({empleado, handleEditar}) => {
                 tareas: datosEmpleado.tareas,
                 tareasConcluidas : datosEmpleado.tareasConcluidas
             }
-            setRetroalimentacionTexto("Datos modificados");
+            setDatosEmpleado(empleado)
+            Swal.fire({
+                title: 'Actualización exitosa',
+                icon: 'success',
+                confirmButtonText: 'ok'
+              })
             handleEditar(empleado);
         }
         
@@ -111,23 +122,42 @@ const DatosEditar = ({empleado, handleEditar}) => {
         <div className='articulo login card'>
             <h1 className='card-header text-center'>Datos</h1>
                 <div className='card-body list-group columna'>
-                    <input ref={nombreRef} className="input-agregar-tarea c1" type="text" placeholder="Nombre"/>
-                    <input ref={apellidoRef} className="input-agregar-tarea c2" type="text" placeholder="Apellido"/>
-                    <input ref={mailRef} className="input-agregar-tarea c3" type="text" placeholder="Mail"/>
-                    <input ref={paisRef} className="input-agregar-tarea c4" type="text" placeholder="Pais"/>
-                    <input ref={puestoRef} className="input-agregar-tarea c5" type="text" placeholder="Puesto"/>
-                    <input ref={edadRef} className="input-agregar-tarea c6" type="number" placeholder="Edad" min="18" max="80"/>
-                    <input ref={passwordRef} className="input-agregar-tarea c7" type="password" placeholder="Contraseña"/>
-                    <input ref={passwordRepRef} className="input-agregar-tarea c8" type="password" placeholder="Repita la contraseña"/>
+                <div className='c1 columnas-2'>
+                        <label className='c-1'>Nombre:</label>
+                        <input ref={nombreRef} className="input-agregar-tarea c-2" type="text" placeholder="Nombre"/>
+                    </div>
+                    <div className='c2 columnas-2'>
+                        <label className='c-1'>Apellido:</label>
+                        <input ref={apellidoRef} className="input-agregar-tarea c-2" type="text" placeholder="Apellido"/>
+                    </div>
+                    <div className='c3 columnas-2'>
+                        <label className='c-1'>Mail:</label>
+                        <input ref={mailRef} className="input-agregar-tarea c-2" type="email" placeholder="Mail" pattern=".+@+.com" size="30" required/>
+                    </div>
+                    <div className='c4 columnas-2'>
+                        <label className='c-1'>Puesto:</label>
+                        <input ref={puestoRef} className="input-agregar-tarea c-2" type="text" placeholder="Puesto"/>
+                    </div>
+                    <div className='c5 columnas-2'>
+                        <label className='c-1'>Pais:</label>
+                        <select ref={paisRef} className="input-agregar-tarea c-2">
+                            <option value="Argentina">Argentina</option>
+                            <option value="Chile">Chile</option>
+                        </select>
+                    </div>
+                    <div className='c6 columnas-2'>
+                        <label className='c-1'>Edad:</label>
+                        <input ref={edadRef} className="input-agregar-tarea c-2" type="date"/>
+                    </div>
+                    <div className='c7 columnas-2'>
+                        <label className='c-1'>Constraseña:</label>
+                        <input ref={passwordRef} className="input-agregar-tarea c-2" type="password" placeholder="Contraseña"/>
+                    </div>
+                    <div className='c8 columnas-2'>
+                        <label className='c-1'>Repita constraseña:</label>
+                        <input ref={passwordRepRef} className="input-agregar-tarea c-2" type="password" placeholder="Repita la contraseña"/>
+                    </div>
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Modificar</button>
-                    {retroalimentacionTexto !== "" &&
-                     (
-                        retroalimentacionTexto === "Datos modificados" 
-                            ? <p ref={retroAlimentacion} className="verde c10">{retroalimentacionTexto}</p>
-                            : <p ref={retroAlimentacion} className="rojo c10">{retroalimentacionTexto}</p>
-                    )}
-                    
-                        
                 </div>
         </div>
     </div>
