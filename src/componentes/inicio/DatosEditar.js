@@ -100,7 +100,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
                 apellido: apellidoRef.current.value,
                 mail:mailRef.current.value,
                 pais: paisRef.current.value,
-                puesto: paisRef.current.value,
+                puesto: puestoRef.current.value,
                 edad : edadRef.current.value,
                 contrasenia: hash,
                 entorno : datosEmpleado.entorno,

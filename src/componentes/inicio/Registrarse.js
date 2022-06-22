@@ -3,6 +3,7 @@ import React, { useRef} from 'react'
 import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from '../../helpers/validarEntradas'
 import { baseDatos } from '../baseDatos/baseFalsa'
 import Swal from 'sweetalert2'
+import * as servicio from '../servicios/empleadoService'
 
 const bcrypt = require('bcryptjs');
 
@@ -20,45 +21,60 @@ const Registrarse = ({handleRegistrar}) => {
     let datos = baseDatos;
 
     const validar = () => {
-        let texto = ""
+        let texto = []
+        console.log(texto)
 
         if (passwordRef.current.value !== passwordRepRef.current.value){
-            texto = "Las contraseñas no son iguales";
+            texto[0] = "Las contraseñas no son iguales";
         }
-        if (!constraseñaValida(passwordRepRef.current.value)){
-            texto = "Contraseña repetida no valido, debe contener al menos 8 caracteres"
-        }
-        if (!constraseñaValida(passwordRef.current.value)){
-            texto = "Contraseña no valida, debe contener al menos 8 caracteres"
-        }
-        texto = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
-       
-        texto = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
 
-        texto = validarNacimiento(edadRef.current.valueAsNumber)
+        texto[1] = constraseñaValida(passwordRepRef.current.value,"Contraseña repetida no valido, debe contener al menos 8 caracteres")
+
+        texto[2] = constraseñaValida(passwordRef.current.value,"Contraseña no valida, debe contener al menos 8 caracteres")
+
+        texto[3] = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
+
+        texto[4] = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
+
+        texto[5] = validarNacimiento(edadRef.current.valueAsNumber)
 
         if (!mailValido(mailRef.current.value)){
-            texto = "Mail no valido, solo usar letras y espacios"
+            texto[6] = "Correo no valido, solo usar letras y espacios"
 
         }else{
             let existeMail;
+
+            let res = servicio.existeMail(mailRef.current.value)
+
+            console.log("datos Devueltos: ", res);
+          
+            const {PromiseResult} = res
+            console.log(PromiseResult);
+            if(res === "Ya existe"){
+                alert("Ya Existe")}
+
             existeMail = datos.find(persona => persona.mail === mailRef.current.value)
             if (existeMail !== undefined)
-                {texto = "Mail ya ocupado"}
+                {texto[7] = "Mail ya ocupado"}
         }
 
-        texto = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
+        texto[8] = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
 
-        texto = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
+        texto[9] = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
+        
+        let idBanderaFallida = texto.findIndex(bandera => bandera !== undefined && bandera !== "")
+        console.log(idBanderaFallida);
 
-        Swal.fire({
-            title: 'Registro fallido',
-            text: texto,
-            icon: 'error',
-            confirmButtonText: 'Cerrar'
-          })
+        if(idBanderaFallida !== -1){
+            Swal.fire({
+                title: 'Registro fallido',
+                text: texto[idBanderaFallida],
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            })
+        }
 
-        if (texto === ""){
+        if (idBanderaFallida === -1){
             var salt = bcrypt.genSaltSync(10);
             var hash = bcrypt.hashSync(passwordRef.current.value, salt);
             let nuevoEmpleado = {
@@ -68,8 +84,8 @@ const Registrarse = ({handleRegistrar}) => {
                 mail:mailRef.current.value,
                 pais: paisRef.current.value,
                 puesto: puestoRef.current.value,
-                contrasenia: hash,
-                edad: edadRef.current.valueAsNumber,
+                contraseña: hash,
+                nacimiento: edadRef.current.valueAsNumber,
                 entorno : [],
                 tareas: [],
                 tareasConcluidas : []

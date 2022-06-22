@@ -369,6 +369,7 @@ p{
 }
 .texto-nav:hover{
     color: #3f1a2b;
+    cursor: grab;
 }
 .input-agregar-tarea{
     padding-left: 20px !important;

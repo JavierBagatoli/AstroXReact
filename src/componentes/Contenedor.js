@@ -11,6 +11,7 @@ import ListaTarjetas from './ListaTarjetas'
 import Navbar from './Navbar'
 import Titulo from './Titulo'
 import Swal from 'sweetalert2'
+import * as servicio from "./servicios/empleadoService"
 
 const bcrypt = require('bcryptjs');
 
@@ -27,10 +28,13 @@ const Contenedor = () => {
 
     const handleRegistrar = (nuevoEmpleado) => {
         let NuevaBaseDeDatos = [...baseDeDatos , nuevoEmpleado]
+       // servicio.registrarEmpleado(nuevoEmpleado)
         setBaseDeDatos(NuevaBaseDeDatos)
     }
 
     const handleLogin = (mail, password) =>{
+        console.log(servicio.getEmpleado().then(res => res));
+                    
         let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
             if (personaIdentificada !== undefined){
                 if (bcrypt.compareSync(password, personaIdentificada.contrasenia)){
