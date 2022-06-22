@@ -13,36 +13,30 @@ import Titulo from './Titulo'
 import Swal from 'sweetalert2'
 import * as servicio from "./servicios/empleadoService"
 
-const bcrypt = require('bcryptjs');
-
-const initialTareas = baseDatos[0].tareas;
-const initialTareasCompeltas = baseDatos[0].tareasConcluidas;
 
 const Contenedor = () => {
     const [sesionIniciada, setSesionIniciada] = useState(false)
     const [baseDeDatos, setBaseDeDatos] = useState(baseDatos)
+    const [empleado, setEmpleado] = useState(null)
     const [empleadoPos, setEmpleadoPos] = useState(-1)
-    const [tareas, setTareas] = useState(initialTareas)
-    const [tareasCompletas, setTareasCompletas] = useState(initialTareasCompeltas)
+    const [tareas, setTareas] = useState([])
+    const [tareasCompletas, setTareasCompletas] = useState([])
     const [pagina, setPagina] = useState("")
 
     const handleRegistrar = (nuevoEmpleado) => {
         let NuevaBaseDeDatos = [...baseDeDatos , nuevoEmpleado]
-       // servicio.registrarEmpleado(nuevoEmpleado)
+        servicio.registrarEmpleado(nuevoEmpleado)
         setBaseDeDatos(NuevaBaseDeDatos)
     }
 
-    const handleLogin = (mail, password) =>{
-        console.log(servicio.getEmpleado().then(res => res));
+    const handleLogin = async(mail, contraseña) =>{
+        const empleado = await servicio.getEmpleado(mail, contraseña)
+        console.log(empleado);
                     
-        let personaIdentificada = baseDeDatos.find(persona => persona.mail === mail)
-            if (personaIdentificada !== undefined){
-                if (bcrypt.compareSync(password, personaIdentificada.contrasenia)){
-                    setSesionIniciada(true);
-                    let idEnBaseDeDatos = baseDeDatos.findIndex( empleado => empleado.id === personaIdentificada.id )
-                    setEmpleadoPos(idEnBaseDeDatos)
-                    }
-                }
+        setSesionIniciada(true);
+        setEmpleado(empleado)
+                    
+                
     }
 
     const completarTarea = useCallback((tarea) => {

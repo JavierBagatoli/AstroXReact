@@ -1,16 +1,14 @@
 import axios from "axios"
 
 export const getEmpleados = async () => {
-    return await axios.get("http://localhost:3001/api/empleados/Empleados"/*,{
-        mail: "javier@mail.com",
-        contraseña : "123"
-    }*/).then(res => res.data.docs[0]).catch( err => err)
+    return await axios.get("http://localhost:3001/api/empleados/Empleados")
+        .then(res => res.data.docs)
 }
-export const getEmpleado = async () => {
+export const getEmpleado = async (mail, contraseña) => {
     return await axios.post("http://localhost:3001/api/empleados/Validar",{
-        mail: "javier@mail.com",
-        contraseña : "123"
-    }).then(res => res.data).catch( err => err)
+        mail: mail,
+        contraseña : contraseña
+    }).then(res => res.data)
 }
 
 export const registrarEmpleado = async(empleado) => {
@@ -28,14 +26,9 @@ export const registrarEmpleado = async(empleado) => {
     })
 }
 
-export const existeMail = async(mail, req) => {
+export const existeMail = async(mail) => {
     console.log(mail)
-    const respuesta = await axios.post("http://localhost:3001/api/empleados/existeMail",{
+    return await axios.post("http://localhost:3001/api/empleados/ExisteMail",{
         mail: mail
     }).then(res => res.data.respuesta)
-    if (respuesta === "Ya existe"){
-        return false
-    }else{
-        return true
-    }
 }

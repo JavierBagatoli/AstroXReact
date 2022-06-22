@@ -1,7 +1,6 @@
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
 import React, { useRef} from 'react'
 import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from '../../helpers/validarEntradas'
-import { baseDatos } from '../baseDatos/baseFalsa'
 import Swal from 'sweetalert2'
 import * as servicio from '../servicios/empleadoService'
 
@@ -18,11 +17,8 @@ const Registrarse = ({handleRegistrar}) => {
     const passwordRef = useRef("")
     const passwordRepRef = useRef("")
 
-    let datos = baseDatos;
-
-    const validar = () => {
+    const validar = async() => {
         let texto = []
-        console.log(texto)
 
         if (passwordRef.current.value !== passwordRepRef.current.value){
             texto[0] = "Las contraseñas no son iguales";
@@ -42,20 +38,11 @@ const Registrarse = ({handleRegistrar}) => {
             texto[6] = "Correo no valido, solo usar letras y espacios"
 
         }else{
-            let existeMail;
-
-            let res = servicio.existeMail(mailRef.current.value)
-
-            console.log("datos Devueltos: ", res);
-          
-            const {PromiseResult} = res
-            console.log(PromiseResult);
-            if(res === "Ya existe"){
-                alert("Ya Existe")}
-
-            existeMail = datos.find(persona => persona.mail === mailRef.current.value)
-            if (existeMail !== undefined)
-                {texto[7] = "Mail ya ocupado"}
+            let res = await servicio.existeMail(mailRef.current.value)
+            console.log(res);
+            if(res === "Ya existe")
+                {alert()
+                    texto[7] = "Mail ya ocupado"}
         }
 
         texto[8] = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
@@ -63,8 +50,7 @@ const Registrarse = ({handleRegistrar}) => {
         texto[9] = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
         
         let idBanderaFallida = texto.findIndex(bandera => bandera !== undefined && bandera !== "")
-        console.log(idBanderaFallida);
-
+        console.log(texto)
         if(idBanderaFallida !== -1){
             Swal.fire({
                 title: 'Registro fallido',
