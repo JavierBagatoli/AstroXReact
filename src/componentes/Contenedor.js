@@ -12,13 +12,13 @@ import Navbar from './Navbar'
 import Titulo from './Titulo'
 import Swal from 'sweetalert2'
 import * as servicio from "./servicios/empleadoService"
+import * as tareaServicio from "./servicios/tareasServicio"
 
 
 const Contenedor = () => {
     const [sesionIniciada, setSesionIniciada] = useState(false)
     const [baseDeDatos, setBaseDeDatos] = useState(baseDatos)
     const [empleado, setEmpleado] = useState(null)
-    const [empleadoPos, setEmpleadoPos] = useState(-1)
     const [tareas, setTareas] = useState([])
     const [tareasCompletas, setTareasCompletas] = useState([])
     const [pagina, setPagina] = useState("")
@@ -31,52 +31,76 @@ const Contenedor = () => {
 
     const handleLogin = async(mail, contraseña) =>{
         const empleado = await servicio.getEmpleado(mail, contraseña)
-        console.log(empleado);
-                    
-        setSesionIniciada(true);
-        setEmpleado(empleado)
-                    
+        console.log(empleado.respuesta)
+        if (empleado?.respuesta === "Error al iniciar sesión" ){
+            Swal.fire({
+                title: 'Datos incorrectos',
+                text: empleado.respuesta,
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            })
+        }else{
+            setSesionIniciada(true);
+            setEmpleado(empleado)
+            let listaTareas = empleado.tareas
+            let tareasPendientes = listaTareas.filter(tarea => tarea.fechaCompletado === null || tarea.fechaCompletado === 0)
+            let tareasCompletadas = listaTareas.filter(tarea => tarea.fechaCompletado !== null && tarea.fechaCompletado !== 0)
+            setTareas(tareasPendientes)
+            setTareasCompletas(tareasCompletadas)  
+        }
+               
                 
     }
 
     const completarTarea = useCallback((tarea) => {
-        let nuevasTareasCompletas = [...tareasCompletas, tarea];
+        tareaServicio.completarTarea(tarea, empleado.mail)
+        let tareaCompletada = tarea;
+        tareaCompletada.fechaCompletado = Date.now()
+        let nuevasTareasCompletas = [...tareasCompletas, tareaCompletada];
         setTareasCompletas(nuevasTareasCompletas)
-
+        
         let nuevasTareas = 
-            tareas.filter(tareaBorrar => tareaBorrar.id !== tarea.id)
+            tareas.filter(tareaBorrar => tareaBorrar.fechaCreacion !== tarea.fechaCreacion)
         setTareas(nuevasTareas);
-    }, [tareas, tareasCompletas])
+    }, [tareas, tareasCompletas, empleado])
 
     const descompletarTarea = useCallback((tarea) => {
-        let nuevasTareas = [...tareas, tarea];
+        tareaServicio.descompletarTarea(tarea, empleado.mail)
+        let tareaCompletada = tarea;
+        tareaCompletada.fechaCompletado = 0
+        let nuevasTareas = [...tareas, tareaCompletada];
         setTareas(nuevasTareas)
 
         let nuevasTareasCompletas =
-            tareasCompletas.filter(tareaBorrar => tareaBorrar.id !== tarea.id)
+            tareasCompletas.filter(tareaBorrar => tareaBorrar.fechaCreacion !== tarea.fechaCreacion)
         setTareasCompletas(nuevasTareasCompletas);
-    }, [tareas, tareasCompletas])
+
+    }, [tareas, tareasCompletas, empleado])
 
     const eliminarTarea = useCallback((tarea) => {
+        tareaServicio.quitarTarea(tarea, empleado.mail)
         let nuevasTareasCompletas =
-            tareasCompletas.filter(tareaBorrar => tareaBorrar.id !== tarea.id)
+            tareasCompletas.filter(tareaBorrar => tareaBorrar.fechaCreacion !== tarea.fechaCreacion)
         setTareasCompletas(nuevasTareasCompletas);
-    }, [tareasCompletas])
+    }, [tareasCompletas, empleado])
 
     const crearTarea = useCallback((tarea) =>{
+        tareaServicio.agregarTarea(tarea, empleado.mail)
         let nuevasTareas = [...tareas, tarea]
         setTareas(nuevasTareas)
-    },[tareas])
+
+    },[tareas, empleado])
 
     const editarUsuario = useCallback((empleadoEditado) => {
+        
+
         let baseDatosNueva = baseDeDatos.filter(empleado => empleado.id !== empleadoEditado.id)
         baseDatosNueva = [...baseDatosNueva, empleadoEditado]
         setBaseDeDatos(baseDatosNueva)
-        setEmpleadoPos(baseDatosNueva.length-1)
     }, [baseDeDatos])
 
     const handleAbrirEntorno = useCallback(() =>{
-        const apertura = baseDeDatos[empleadoPos].entorno.filter(
+        const apertura = empleado.entorno.filter(
             entornoEmpleado => entornoEmpleado?.prioridad === true
         )
         apertura.map(entornoEmpleado => window.open(entornoEmpleado.direccion))
@@ -86,7 +110,7 @@ const Contenedor = () => {
             icon: 'success',
             confirmButtonText: 'Cool'
           })
-    }, [empleadoPos, baseDeDatos])
+    }, [empleado])
 
     const menuTareas = () =>{
         return (
@@ -118,7 +142,7 @@ const Contenedor = () => {
 
     const cerrarSesion = () => {
         setSesionIniciada(false)
-        setEmpleadoPos(-1)
+        setEmpleado(null)
         handleNavbar()
     }
     const configuarEmpleado = () => {
@@ -131,7 +155,7 @@ const Contenedor = () => {
     const handleNavbar = () => {
         return (<>
             <Navbar
-                empleado={baseDeDatos[empleadoPos]}
+                empleado={empleado}
                 accion0={mostrarTareas}
                 accion1={configuarEmpleado}
                 accion2={cerrarSesion}/>
@@ -139,7 +163,7 @@ const Contenedor = () => {
     }
 
     const menuUsuario = () =>{
-        let EmpleadoActivo = baseDeDatos[empleadoPos]
+        let EmpleadoActivo = empleado
         return(
             <>
                 <DatosEditar
@@ -159,7 +183,7 @@ const Contenedor = () => {
         <div className='containerAstro'>
         {sesionIniciada
             ?
-                pagina === "configuarEmpleado" ? menuUsuario()  :menuTareas()
+                pagina === "configuarEmpleado" ? menuUsuario()  : menuTareas()
             :
                 menuIniciar()
         }

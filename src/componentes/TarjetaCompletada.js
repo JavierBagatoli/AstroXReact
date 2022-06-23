@@ -7,7 +7,7 @@ const TarjetaCompletada = ({tarea, funcionBoton, funcionEliminar}) => {
   
   return (
     <div  className='item-tarea'>
-        <p>{tarea.nombre}</p>
+        <p>{tarea.titulo}</p>
         <button onClick={() => funcionEliminar(tarea)} className='boton-eliminar-tarea' title="Eliminar Permanente" alt="Eliminar">
           <img className="svg" src={EliminarSVG} alt="Eliminar"></img>
         </button>

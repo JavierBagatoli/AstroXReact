@@ -100,8 +100,8 @@ const Registrarse = ({handleRegistrar}) => {
                         <input ref={apellidoRef} className="input-agregar-tarea c-2" type="text" placeholder="Apellido"/>
                     </div>
                     <div className='c3 columnas-2'>
-                        <label className='c-1'>Mail:</label>
-                        <input ref={mailRef} className="input-agregar-tarea c-2" type="email" placeholder="Mail" pattern=".+@+.com" size="30" required/>
+                        <label className='c-1'>Correo:</label>
+                        <input ref={mailRef} className="input-agregar-tarea c-2" type="email" placeholder="Correo" pattern=".+@+.com" size="30" required/>
                     </div>
                     <div className='c4 columnas-2'>
                         <label className='c-1'>Puesto:</label>
@@ -109,21 +109,21 @@ const Registrarse = ({handleRegistrar}) => {
                     </div>
                     <div className='c5 columnas-2'>
                         <label className='c-1'>Pais:</label>
-                        <select ref={paisRef} className="input-agregar-tarea c-2">
+                        <select ref={paisRef} className="input-agregar-tarea c-2 ampliar">
                             <option value="Argentina">Argentina</option>
                             <option value="Chile">Chile</option>
                         </select>
                     </div>
                     <div className='c6 columnas-2'>
-                        <label className='c-1'>Edad:</label>
+                        <label className='c-1'>Fecha nacimiento:</label>
                         <input ref={edadRef} className="input-agregar-tarea c-2" type="date"/>
                     </div>
                     <div className='c7 columnas-2'>
-                        <label className='c-1'>Constraseña:</label>
+                        <label className='c-1'>Contraseña:</label>
                         <input ref={passwordRef} className="input-agregar-tarea c-2" type="password" placeholder="Contraseña"/>
                     </div>
                     <div className='c8 columnas-2'>
-                        <label className='c-1'>Repita constraseña:</label>
+                        <label className='c-1'>Repita contraseña:</label>
                         <input ref={passwordRepRef} className="input-agregar-tarea c-2" type="password" placeholder="Repita la contraseña"/>
                     </div>
                     <button onClick={() => validar()} className="boton  boton-centrar c9">Agregar</button>                        

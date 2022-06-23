@@ -1,3 +1,4 @@
+//Codigo creado por Javier Bagatoli el dia 20/06/2022
 import axios from "axios"
 
 export const getEmpleados = async () => {
@@ -12,6 +13,23 @@ export const getEmpleado = async (mail, contraseña) => {
 }
 
 export const registrarEmpleado = async(empleado) => {
+    alert(empleado)
+    return await axios.post("http://localhost:3001/api/empleados/CrearEmpleado",{
+        nombre: empleado.nombre,
+        apellido: empleado.apellido,
+        mail: empleado.mail,
+        pais: empleado.pais,
+        nacimiento: empleado.nacimiento,
+        contraseña: empleado.contraseña,
+        puesto: empleado.puesto,
+        entorno: [],
+        tareas: [],
+        tareasConcluidas: []
+    })
+}
+
+export const editarEmpleado = async(empleado) => {
+    alert(empleado)
     return await axios.post("http://localhost:3001/api/empleados/CrearEmpleado",{
         nombre: empleado.nombre,
         apellido: empleado.apellido,

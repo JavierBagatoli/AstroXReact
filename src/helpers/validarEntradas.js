@@ -64,11 +64,14 @@ export function validarNacimiento(fecha){
         alert( años + "/" + meses + "/"+ dias)
         
         if (hoyAño - nacimientoAño < 18){
+            if (hoyMes - nacimientoMes > 0 && texto === ""){
+                if (hoyDia - nacimientoDia > 1 && texto === ""){
+                    return "Faltan Dias para que la fecha sea valida"}
+                return "Faltan meses para que la fecha sea valida"
+            }
             return "Faltan Años para que la fecha sea valida"}
-        if (hoyMes - nacimientoMes > 0 && texto === ""){
-            return "Faltan meses para que la fecha sea valida"}
-        if (hoyDia - nacimientoDia > 1 && texto === ""){
-            return "Faltan Dias para que la fecha sea valida"}
+        
+        
     }else{
         return "fecha invalida"
     }

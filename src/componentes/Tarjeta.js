@@ -5,7 +5,7 @@ import CheckSVG from '../svg/check.svg'
 const Tarjeta = ({tarea, funcionBoton}) => {
   return (
     <div className='item-tarea'>
-        <p>{tarea.nombre}</p>
+        <p>{tarea.titulo}</p>
         <button onClick={() => funcionBoton(tarea)} className='boton-tarea' title="Completará la tarea">
           <img className='svg' src={CheckSVG} alt="Terminar" title="Terminar"></img>  
         </button>

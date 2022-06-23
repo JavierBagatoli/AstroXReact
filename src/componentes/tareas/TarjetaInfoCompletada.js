@@ -5,7 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import CheckSVG from '../../svg/check.svg'
+import EliminarSVG from '../../svg/eliminar.svg'
+import LapizSVG from '../../svg/lapiz.svg'
 
 const style = {
   position: 'absolute',
@@ -20,14 +21,13 @@ const style = {
 };
 
 
-export default function TarjetaInfo({tarea, funcionBoton, color}) {
+export default function TarjetaInfoCompletada({tarea, funcionBoton, funcionEliminar}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const creacionEntrada = new Date(tarea.fechaCreacion);
   const creacion = creacionEntrada.toLocaleDateString();
-  
   let completado = 0;
   if (tarea.fechaCompletado !== 0) {
     const completadoEntrada = new Date(tarea.fechaCompletado);
@@ -44,27 +44,15 @@ export default function TarjetaInfo({tarea, funcionBoton, color}) {
     limite = limiteEntrada.toLocaleDateString()
   }
 
-  const cierreProximo = fecha => {
-    const diaHoy = Date.now();
-    if(fecha === null){
-      return "item-tarea"
-    }
-    const fechaMax = fecha - diaHoy
-    if (fechaMax < (86400000*3)){
-      return "item-tarea rojo"
-    }else if(fechaMax < (86400000*7)) {
-      return "item-tarea amarillo"
-    }else{
-      return "item-tarea"
-    }
-  } 
-//
   return (
     <div>
-      <div className={cierreProximo(tarea.fechaLimite)} >
+      <div className='item-tarea'>
         <p className='tarea-estilo' onClick={() => handleOpen()}>{tarea.titulo}</p>
-        <button onClick={() => funcionBoton(tarea)} className='boton-tarea' title="Completará la tarea">
-          <img className='svg' src={CheckSVG} alt="Terminar" title="Terminar"></img>  
+        <button onClick={() => funcionEliminar(tarea)} className='boton-eliminar-tarea' title="Eliminar Permanente" alt="Eliminar">
+          <img className="svg" src={EliminarSVG} alt="Eliminar"></img>
+        </button>
+        <button onClick={() => funcionBoton(tarea)} className='boton-tarea' title="Descompletar" alt="Eliminar">
+          <img className="svg" src={LapizSVG} alt="Descompletar"></img>
         </button>
       </div>
 

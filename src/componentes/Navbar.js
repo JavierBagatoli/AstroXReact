@@ -5,8 +5,8 @@ import Grid from '@mui/material/Grid';
 
 
 const Navbar = ({empleado, accion0, accion1, accion2}) => { 
-  
   const [titular, setTitular] = useState("")
+
   useEffect(() => {
     if(empleado !== undefined){
       setTitular(empleado?.puesto + " " + empleado?.apellido)
@@ -44,7 +44,7 @@ const Navbar = ({empleado, accion0, accion1, accion2}) => {
           <h1 className="texto-nav grid-item-astroX">
             Astro X
           </h1>
-          {(empleado !== undefined) &&
+          {(empleado !== null) &&
             funcionesUsuario()
           }
         </div>

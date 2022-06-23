@@ -33,16 +33,15 @@ export default function TransitionsModal({funcionBoton}) {
   const descripcionRef = useRef("");
 
   const handleCrearTarea = () => {
-    let nombreValido = entradaValida(nombreRef.current.value);
-    let descripcionValida = entradaValida(descripcionRef.current.value);
-    if (nombreValido && descripcionValida){
+    let nombreValido = entradaValida(nombreRef.current.value, "Nombre invalido");
+    let descripcionValida = entradaValida(descripcionRef.current.value, "Descripcion invalida");
+    if (nombreValido === "" && descripcionValida === ""){
         setTareaValida(true)
         let nuevaTarea = {
-          id: Date.now(),
-          nombre: nombreRef.current.value,
+          titulo: nombreRef.current.value,
           descripcion: descripcionRef.current.value,
           fechaCreacion: Date.now(),
-          fechaCompletdo: "",
+          fechaCompletado: 0,
           fechaLimite: fechaRef.current.valueAsNumber,
       }
       funcionBoton(nuevaTarea)
