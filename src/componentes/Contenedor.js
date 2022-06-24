@@ -1,7 +1,6 @@
 //Codigo creado por Javier Bagatoli el dia 02/06/2022
 
 import React, { useCallback, useState } from 'react'
-import { baseDatos } from './baseDatos/baseFalsa'
 import CuerpoCentral from './CuerpoCentral'
 import FormularioEntorno from './entorno/FormularioEntorno'
 import DatosEditar from './inicio/DatosEditar'
@@ -17,7 +16,7 @@ import * as tareaServicio from "./servicios/tareasServicio"
 
 const Contenedor = () => {
     const [sesionIniciada, setSesionIniciada] = useState(false)
-    const [baseDeDatos, setBaseDeDatos] = useState(baseDatos)
+    const [baseDeDatos, setBaseDeDatos] = useState([])
     const [empleado, setEmpleado] = useState(null)
     const [tareas, setTareas] = useState([])
     const [tareasCompletas, setTareasCompletas] = useState([])

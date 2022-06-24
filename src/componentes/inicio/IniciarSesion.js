@@ -26,6 +26,8 @@ const IniciarSesion = ({handleLogin}) => {
             title: 'Datos incorrectos',
             text: texto,
             icon: 'error',
+            background: "#3f1a2b",
+            color: "white",
             confirmButtonText: 'Cerrar'
         })
         }

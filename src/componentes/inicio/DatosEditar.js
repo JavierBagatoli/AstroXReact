@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from '../../helpers/validarEntradas'
-import { baseDatos } from '../baseDatos/baseFalsa'
 import Swal from 'sweetalert2'
+import withReactContent from "sweetalert2-react-content";
 
 const bcrypt = require('bcryptjs');
 
@@ -28,8 +28,6 @@ const DatosEditar = ({empleado, handleEditar}) => {
     const edadRef = useRef(0)
     const passwordRef = useRef("")
     const passwordRepRef = useRef("")
-
-    let datos = baseDatos;
 
     useEffect(() => {
         nombreRef.current.value = datosEmpleado.nombre;
@@ -65,11 +63,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
             texto = "Mail no valido, solo usar letras y espacios"
 
         }else{
-            let existeMail;
-            existeMail = datos.find(persona => persona.mail === mailRef.current.value)
-            if (existeMail !== undefined)
-                {if (existeMail !== empleado)
-                     texto = "Mail ya ocupado"}
+            texto = "Mail ya ocupado"
         }
 
         texto = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
@@ -108,11 +102,19 @@ const DatosEditar = ({empleado, handleEditar}) => {
                 tareasConcluidas : []
             }
             setDatosEmpleado(empleado)
-            Swal.fire({
-                title: 'Actualización exitosa',
-                icon: 'success',
-                confirmButtonText: 'ok'
-              })
+            const MySwal = withReactContent(Swal)
+
+            MySwal.fire({
+            text: "En desarrollo",
+            icon: "info",
+            background: "#3f1a2b",
+            color: "white",
+            confirmButtonText: "Entendido", 
+            showCloseButton: "true",
+            imageUrl: "https://media0.giphy.com/media/DfxP2AmhATn6XTwipc/giphy.gif?cid=790b76113a1119f47fedd5f9cc16ea0cf9e2fdb59286b81e&rid=giphy.gif&ct=g",
+            imageHeight: "250px"
+            })
+            
             handleEditar(empleado);
         }
         

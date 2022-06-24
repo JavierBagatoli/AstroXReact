@@ -56,6 +56,8 @@ const Registrarse = ({handleRegistrar}) => {
                 title: 'Registro fallido',
                 text: texto[idBanderaFallida],
                 icon: 'error',
+                background: "#3f1a2b",
+                color: "white",
                 confirmButtonText: 'Cerrar'
             })
         }
@@ -79,6 +81,8 @@ const Registrarse = ({handleRegistrar}) => {
             Swal.fire({
                 title: 'Registro completado',
                 icon: 'success',
+                background: "#3f1a2b",
+                color: "white",
                 confirmButtonText: 'ok'
               })
             handleRegistrar(nuevoEmpleado);

@@ -59,6 +59,7 @@ export default function TarjetaInfo({tarea, funcionBoton, color}) {
     }
   } 
 //
+
   return (
     <div>
       <div className={cierreProximo(tarea.fechaLimite)} >
