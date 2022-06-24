@@ -32,7 +32,6 @@ function diaTexto() {
 }
 
 export function colorTexto() {
-  alert("dia");
   if (numeroDia === 6 || numeroDia === 0) {
     return "diaNoLaboral";
   }

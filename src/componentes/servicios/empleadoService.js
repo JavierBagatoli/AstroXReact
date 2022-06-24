@@ -16,7 +16,6 @@ export const getEmpleado = async (mail, contraseña) => {
 };
 
 export const registrarEmpleado = async (empleado) => {
-  alert(empleado);
   return await axios.post("http://localhost:3001/api/empleados/CrearEmpleado", {
     nombre: empleado.nombre,
     apellido: empleado.apellido,
@@ -32,7 +31,6 @@ export const registrarEmpleado = async (empleado) => {
 };
 
 export const editarEmpleado = async (empleado) => {
-  alert(empleado);
   return await axios.post("http://localhost:3001/api/empleados/CrearEmpleado", {
     nombre: empleado.nombre,
     apellido: empleado.apellido,
