@@ -10,21 +10,21 @@ const IniciarSesion = ({handleLogin}) => {
     const passwordRef = useRef("")
     
     const validar = () => {
-        let texto = ""
+        let vectorErrores = ""
 
-        texto = constraseñaValida(passwordRef.current.value,"Contraseña repetida no valido, debe contener al menos 8 caracteres")
+        vectorErrores = constraseñaValida(passwordRef.current.value,"Contraseña repetida no valido, debe contener al menos 8 caracteres")
 
         if(!mailValido(mailRef.current.value)){
-            texto = "Mail no valido"
+            vectorErrores = "Mail no valido"
         }
 
         
-        if(texto === ""){
+        if(vectorErrores === ""){
                 handleLogin(mailRef.current.value, passwordRef.current.value)
         }else{
           Swal.fire({
             title: 'Datos incorrectos',
-            text: texto,
+            text: vectorErrores,
             icon: 'error',
             background: "#3f1a2b",
             color: "white",

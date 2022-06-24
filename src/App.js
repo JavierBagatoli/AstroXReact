@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 import Contenedor from "./componentes/Contenedor";
 
 function App() {
   return (
     <div className="App">
-      <Contenedor/>
+      <Contenedor />
     </div>
   );
 }

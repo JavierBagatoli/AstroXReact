@@ -4,18 +4,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from '../../helpers/validarEntradas'
 import Swal from 'sweetalert2'
 import withReactContent from "sweetalert2-react-content";
+import * as servicio from "../servicios/empleadoService"
 
 const bcrypt = require('bcryptjs');
-
-//const initialEmpleado = {
-//    nombre: "test",
-//    apellido: "test2",
-//    mail: "testMail",
-//    pais: "ArgentinaTest",
-//    puesto: "test",
-//    edad: "-1",
-//    contrasenia: "test"
-//}
 
 const DatosEditar = ({empleado, handleEditar}) => {
     let [datosEmpleado, setDatosEmpleado] = useState(empleado)
@@ -41,44 +32,49 @@ const DatosEditar = ({empleado, handleEditar}) => {
     }, [datosEmpleado])
     
 
-    const validar = () => {
-        let texto = ""
+    const validar = async() => {
+        let vectorErrores = ""
 
         if (passwordRef.current.value !== passwordRepRef.current.value){
-            texto = "Las contraseñas no son iguales";
+            vectorErrores = "Las contraseñas no son iguales";
         }
         if (!constraseñaValida(passwordRepRef.current.value) && passwordRepRef.current.value !== ""){
-            texto = "Contraseña repetida no valido, solo usar letras y espacios"
+            vectorErrores = "Contraseña repetida no valido, solo usar letras y espacios"
         }
         if (!constraseñaValida(passwordRef.current.value) && passwordRef.current.value !== ""){
-            texto = "Contraseña  no valida, solo usar letras y espacios"
+            vectorErrores = "Contraseña  no valida, solo usar letras y espacios"
         }
-        texto = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
+        vectorErrores = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
        
-        texto = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
+        vectorErrores = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
 
-        texto = validarNacimiento(edadRef.current.valueAsNumber)
+        vectorErrores = validarNacimiento(edadRef.current.valueAsNumber)
 
         if (!mailValido(mailRef.current.value)){
-            texto = "Mail no valido, solo usar letras y espacios"
+            vectorErrores = "Mail no valido, solo usar letras y espacios"
 
         }else{
-            texto = "Mail ya ocupado"
+            let res = await servicio.existeMail(mailRef.current.value)
+            console.log(res);
+            if(res === "Ya existe")
+                {alert()
+                    vectorErrores[7] = "Mail ya ocupado"}
         }
 
-        texto = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
+        vectorErrores = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
 
-        texto = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
+        vectorErrores = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
 
         Swal.fire({
             title: 'Actualización fallida',
-            text: texto,
+            text: vectorErrores,
             icon: 'error',
             confirmButtonText: 'Cerrar'
           })
 
         let hash
 
+        //Encriptar contraseña
         if(passwordRef.current.value !== ""){
             var salt = bcrypt.genSaltSync(10);
             hash = bcrypt.hashSync(passwordRef.current.value, salt);
@@ -87,7 +83,7 @@ const DatosEditar = ({empleado, handleEditar}) => {
         }
 
 
-        if (texto === ""){
+        if (vectorErrores === ""){
             let empleado = {
                 id: datosEmpleado.id,
                 nombre: nombreRef.current.value,

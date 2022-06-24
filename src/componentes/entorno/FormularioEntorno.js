@@ -1,15 +1,16 @@
-import React from 'react'
-import Enlace from './Enlace'
+import React from "react";
+import Enlace from "./Enlace";
 
-const FormularioEntorno = ({empleado}) => {
+const FormularioEntorno = ({ empleado }) => {
   return (
-    <article className='articulo'>
+    <article className="articulo">
       <h1>Entorno laboral</h1>
-        {empleado &&
-          empleado.entorno.map((enlace, index) => <Enlace enlace={enlace} key={index}/>)
-        }
+      {empleado &&
+        empleado.entorno.map((enlace, index) => (
+          <Enlace enlace={enlace} key={index} />
+        ))}
     </article>
-  )
-}
+  );
+};
 
-export default FormularioEntorno
+export default FormularioEntorno;

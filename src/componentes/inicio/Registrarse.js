@@ -4,7 +4,7 @@ import { entradaValida, constraseñaValida, mailValido, validarNacimiento } from
 import Swal from 'sweetalert2'
 import * as servicio from '../servicios/empleadoService'
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require.resolve('bcryptjs');
 
 const Registrarse = ({handleRegistrar}) => {
 
@@ -18,43 +18,43 @@ const Registrarse = ({handleRegistrar}) => {
     const passwordRepRef = useRef("")
 
     const validar = async() => {
-        let texto = []
+        let vectorErrores = []
 
         if (passwordRef.current.value !== passwordRepRef.current.value){
-            texto[0] = "Las contraseñas no son iguales";
+            vectorErrores[0] = "Las contraseñas no son iguales";
         }
 
-        texto[1] = constraseñaValida(passwordRepRef.current.value,"Contraseña repetida no valido, debe contener al menos 8 caracteres")
+        vectorErrores[1] = constraseñaValida(passwordRepRef.current.value,"Contraseña repetida no valido, debe contener al menos 8 caracteres")
 
-        texto[2] = constraseñaValida(passwordRef.current.value,"Contraseña no valida, debe contener al menos 8 caracteres")
+        vectorErrores[2] = constraseñaValida(passwordRef.current.value,"Contraseña no valida, debe contener al menos 8 caracteres")
 
-        texto[3] = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
+        vectorErrores[3] = entradaValida(puestoRef.current.value,"Puesto no valido, solo usar letras y espacios")
 
-        texto[4] = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
+        vectorErrores[4] = entradaValida(paisRef.current.value,"Pais no valido, solo usar letras y espacios")
 
-        texto[5] = validarNacimiento(edadRef.current.valueAsNumber)
+        vectorErrores[5] = validarNacimiento(edadRef.current.valueAsNumber)
 
         if (!mailValido(mailRef.current.value)){
-            texto[6] = "Correo no valido, solo usar letras y espacios"
+            vectorErrores[6] = "Correo no valido, solo usar letras y espacios"
 
         }else{
             let res = await servicio.existeMail(mailRef.current.value)
             console.log(res);
             if(res === "Ya existe")
                 {alert()
-                    texto[7] = "Mail ya ocupado"}
+                    vectorErrores[7] = "Mail ya ocupado"}
         }
 
-        texto[8] = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
+        vectorErrores[8] = entradaValida(apellidoRef.current.value, "Apellido no valido, solo usar letras y espacios")
 
-        texto[9] = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
+        vectorErrores[9] = entradaValida(nombreRef.current.value, "Nombre no valido, solo usar letras y espacios")
         
-        let idBanderaFallida = texto.findIndex(bandera => bandera !== undefined && bandera !== "")
-        console.log(texto)
+        let idBanderaFallida = vectorErrores.findIndex(bandera => bandera !== undefined && bandera !== "")
+        
         if(idBanderaFallida !== -1){
             Swal.fire({
                 title: 'Registro fallido',
-                text: texto[idBanderaFallida],
+                text: vectorErrores[idBanderaFallida],
                 icon: 'error',
                 background: "#3f1a2b",
                 color: "white",
