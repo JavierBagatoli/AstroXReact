@@ -12,6 +12,7 @@ import Titulo from "./Titulo";
 import Swal from "sweetalert2";
 import * as servicio from "./servicios/empleadoService";
 import * as tareaServicio from "./servicios/tareasServicio";
+import ModalRegistrarse from "./inicio/ModalRegistrarse";
 
 const Contenedor = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
@@ -164,9 +165,11 @@ const Contenedor = () => {
   const menuIniciar = () => {
     return (
       <>
-        <Registrarse handleRegistrar={handleRegistrar} />
         <div></div>
-        <IniciarSesion handleLogin={handleLogin} />
+        <div>
+          <IniciarSesion handleLogin={handleLogin} />
+          <ModalRegistrarse handleRegistrar={handleRegistrar} />
+        </div>
       </>
     );
   };

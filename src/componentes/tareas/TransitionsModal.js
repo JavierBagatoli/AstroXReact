@@ -22,6 +22,7 @@ const style = {
 
 export default function TransitionsModal({ funcionBoton }) {
   const [open, setOpen] = useState(false);
+  const [esLimite, setEsLimite] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -30,6 +31,10 @@ export default function TransitionsModal({ funcionBoton }) {
   const nombreRef = useRef("");
   const fechaRef = useRef("");
   const descripcionRef = useRef("");
+
+  const handleEsLimite = () => {
+    setEsLimite(!esLimite);
+  };
 
   const handleCrearTarea = () => {
     let nombreValido = entradaValida(
@@ -40,6 +45,13 @@ export default function TransitionsModal({ funcionBoton }) {
       descripcionRef.current.value,
       "Descripcion invalida"
     );
+
+    let fechaLimite;
+    if (esLimite === false) {
+      fechaLimite = 0;
+    } else {
+      fechaLimite = fechaRef.current.valueAsNumber;
+    }
     if (nombreValido === "" && descripcionValida === "") {
       setTareaValida(true);
       let nuevaTarea = {
@@ -47,7 +59,7 @@ export default function TransitionsModal({ funcionBoton }) {
         descripcion: descripcionRef.current.value,
         fechaCreacion: Date.now(),
         fechaCompletado: 0,
-        fechaLimite: fechaRef.current.valueAsNumber,
+        fechaLimite: fechaLimite,
       };
       funcionBoton(nuevaTarea);
       handleClose();
@@ -82,43 +94,55 @@ export default function TransitionsModal({ funcionBoton }) {
             >
               Agregar Tarea
             </Typography>
-            <TextField
-              inputRef={nombreRef}
-              id="parent-modal-input-nombre"
-              label="Nombre tarea"
-              sx={{ mb: 2 }}
+            <input
+              type="text"
+              useRef={nombreRef}
+              placeholder="Nombre"
               className="input-moda c2"
-            />
-            <TextField
-              inputRef={descripcionRef}
-              id="parent-modal-input-nombre"
-              label="Descripción"
+            ></input>
+            <input
+              type="text"
+              useRef={descripcionRef}
+              placeholder="Descripción"
               className="input-moda c3"
-            />
+            ></input>
             <Typography
               id="transition-modal-fecha-finalizacion"
               sx={{ mt: 2 }}
-              className="c4"
+              className="c4 centrar"
             >
+              <input
+                onClick={() => {
+                  handleEsLimite();
+                }}
+                type="checkbox"
+              ></input>
               Fecha finalización
             </Typography>
-            <input type={"date"} ref={fechaRef} className="c5" />
-            <Button
-              onClick={() => {
-                handleCrearTarea();
-              }}
-              className="boton c6 verde"
-            >
-              Crear
-            </Button>
-            <Button
-              onClick={() => {
-                handleClose();
-              }}
-              className="boton c7 rojo"
-            >
-              Cerrar
-            </Button>
+            {esLimite === true && (
+              <input type={"date"} ref={fechaRef} className="c5" />
+            )}
+
+            <div>
+              <button
+                onClick={() => {
+                  handleCrearTarea();
+                }}
+                className="boton c6 boton-modal boton-verde item1"
+              >
+                Crear
+              </button>
+
+              <button
+                onClick={() => {
+                  handleClose();
+                }}
+                className="boton c7 boton-modal boton-rojo item2"
+              >
+                Cerrar
+              </button>
+            </div>
+
             {!tareaValida && (
               <Typography
                 id="transition-modal-fecha-finalizacion"

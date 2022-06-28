@@ -80,9 +80,10 @@ const Registrarse = ({ handleRegistrar }) => {
         title: "Registro fallido",
         text: vectorErrores[idBanderaFallida],
         icon: "error",
-        background: "#3f1a2b",
+        background: "#192649",
         color: "white",
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#37202b",
       });
     }
 
@@ -124,7 +125,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={nombreRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Nombre"
+              placeholder="Ej: Manuel"
             />
           </div>
           <div className="c2 columnas-2">
@@ -133,7 +134,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={apellidoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Apellido"
+              placeholder="Ej: García"
             />
           </div>
           <div className="c3 columnas-2">
@@ -142,7 +143,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={mailRef}
               className="input-agregar-tarea c-2"
               type="email"
-              placeholder="Correo"
+              placeholder="mgarcia@gmail.com"
               pattern=".+@+.com"
               size="30"
               required
@@ -154,7 +155,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={puestoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Puesto"
+              placeholder="Ej: Gerente"
             />
           </div>
           <div className="c5 columnas-2">
@@ -162,6 +163,8 @@ const Registrarse = ({ handleRegistrar }) => {
             <select ref={paisRef} className="input-agregar-tarea c-2 ampliar">
               <option value="Argentina">Argentina</option>
               <option value="Chile">Chile</option>
+              <option value="Venezuela">Argentina</option>
+              <option value="Colombia">Chile</option>
             </select>
           </div>
           <div className="c6 columnas-2">

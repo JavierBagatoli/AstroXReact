@@ -2,7 +2,6 @@ body {
   background-image: url("https://images5.alphacoders.com/102/1029478.jpg");
   background-size: cover;
   color: white;
-  size: 13;
   border: 0px;
   margin: 0px;
   font-family: sans-serif;
@@ -192,6 +191,7 @@ body {
   border-color: rgb(119, 119, 119) !important;
   grid-row: 1;
   font-size: 18px;
+  color-scheme: red;
 }
 
 .boton-tarea,
@@ -285,9 +285,6 @@ p {
   background-color: rgba(134, 16, 16, 0);
   user-select: none;
 }
-.tarea-estilo:hover {
-  background-color: rgba(63, 26, 43, 0.5);
-}
 
 .modal {
   border-color: aliceblue !important;
@@ -304,12 +301,22 @@ p {
 }
 
 .input-moda {
-  color: white;
-  background-color: white !important;
+  text-align: center;
+  height: 30px;
+  background-color: white;
   padding: 5px !important;
-  border-radius: 15px !important;
-  border-style: solid !important;
-  border-width: 1px !important;
+  border-radius: 15px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 10px;
+}
+.input-moda::placeholder {
+  color: #353535;
+  text-align: center;
+}
+
+.centrar {
+  text-align: center;
 }
 
 .p-enlaces {
@@ -330,7 +337,6 @@ p {
 }
 .item1 {
   grid-column: 1;
-  width: auto;
 }
 .item2 {
   grid-column: 3;
@@ -369,14 +375,20 @@ p {
   grid-column: 2;
 }
 
+.rojo-alerta {
+  background-color: rgba(255, 0, 0, 0.7);
+  border-top: dotted;
+  border-bottom: dotted;
+  border-color: aliceblue;
+}
 .rojo {
-  background-color: rgba(134, 16, 16, 0.7) !important;
+  background-color: rgba(134, 16, 16, 0.7);
 }
 .amarillo {
-  background-color: rgba(134, 122, 16, 0.7) !important;
+  background-color: rgba(134, 122, 16, 0.7);
 }
 .verde {
-  background-color: #1a3f21 !important;
+  background-color: #1a3f21;
   padding: 5px;
   border-radius: 15px;
   border-style: solid;
@@ -384,4 +396,28 @@ p {
 }
 .ampliar {
   width: 330px;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+#modalRegistrarse {
+  z-index: 250;
+}
+
+.fila-tarea:hover {
+  background-color: rgb(48, 38, 43, 1);
+}
+
+.boton-modal {
+  width: 150px;
+}
+
+.boton-rojo {
+  background-color: #b24944 !important;
+}
+
+.boton-verde {
+  background-color: #1a3f21 !important;
 }

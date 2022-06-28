@@ -49,26 +49,26 @@ export default function TarjetaInfoCompletada({
 
   return (
     <div>
-      <div className="item-tarea">
-        <p className="tarea-estilo" onClick={() => handleOpen()}>
-          {tarea.titulo}
-        </p>
-        <button
-          onClick={() => funcionEliminar(tarea)}
-          className="boton-eliminar-tarea"
-          title="Eliminar Permanente"
-          alt="Eliminar"
-        >
-          <img className="svg" src={EliminarSVG} alt="Eliminar"></img>
-        </button>
-        <button
-          onClick={() => funcionBoton(tarea)}
-          className="boton-tarea"
-          title="Descompletar"
-          alt="Eliminar"
-        >
-          <img className="svg" src={LapizSVG} alt="Descompletar"></img>
-        </button>
+      <div className="fila-tarea item-tarea" onClick={() => handleOpen()}>
+        <p className="tarea-estilo">{tarea.titulo}</p>
+        <div className="container item2">
+          <button
+            onClick={() => funcionEliminar(tarea)}
+            className="boton-eliminar-tarea item1"
+            title="Eliminar Permanente"
+            alt="Eliminar"
+          >
+            <img className="svg" src={EliminarSVG} alt="Eliminar"></img>
+          </button>
+          <button
+            onClick={() => funcionBoton(tarea)}
+            className="boton-tarea item2"
+            title="Descompletar"
+            alt="Eliminar"
+          >
+            <img className="svg" src={LapizSVG} alt="Descompletar"></img>
+          </button>
+        </div>
       </div>
 
       <Modal

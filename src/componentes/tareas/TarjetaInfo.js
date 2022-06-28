@@ -44,27 +44,32 @@ export default function TarjetaInfo({ tarea, funcionBoton, color }) {
   }
 
   const cierreProximo = (fecha) => {
+    const estilosDefault = "fila-tarea item-tarea";
     const diaHoy = Date.now();
     if (fecha === null) {
-      return "item-tarea";
+      return estilosDefault;
     }
     const fechaMax = fecha - diaHoy;
-    if (fechaMax < 86400000 * 3) {
-      return "item-tarea rojo";
+
+    if (fechaMax < 86400000) {
+      return estilosDefault + " rojo-alerta";
+    } else if (fechaMax < 86400000 * 3) {
+      return estilosDefault + " rojo";
     } else if (fechaMax < 86400000 * 7) {
-      return "item-tarea amarillo";
+      return estilosDefault + " amarillo";
     } else {
-      return "item-tarea";
+      return estilosDefault;
     }
   };
   //
 
   return (
     <div>
-      <div className={cierreProximo(tarea.fechaLimite)}>
-        <p className="tarea-estilo" onClick={() => handleOpen()}>
-          {tarea.titulo}
-        </p>
+      <div
+        onClick={() => handleOpen()}
+        className={cierreProximo(tarea.fechaLimite)}
+      >
+        <p className="tarea-estilo">{tarea.titulo}</p>
         <button
           onClick={() => funcionBoton(tarea)}
           className="boton-tarea"

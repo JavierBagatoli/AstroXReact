@@ -14,9 +14,10 @@ export function entradaValida(entrada, error) {
 
 function noEsLetra(caracter) {
   return (
-    (caracter <= 64 || caracter >= 91) &&
-    (caracter <= 96 || caracter >= 123) &&
-    caracter !== 32
+    (caracter <= 64 || caracter >= 91) && //Alfabeto mayusculas
+    (caracter <= 96 || caracter >= 123) && //Alfabeto minusculas
+    (caracter <= 128 || caracter >= 165) && //Caracteres especiales
+    caracter !== 32 //Espacio
   );
 }
 
