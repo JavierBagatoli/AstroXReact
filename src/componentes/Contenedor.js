@@ -3,9 +3,7 @@
 import React, { useCallback, useState } from "react";
 import CuerpoCentral from "./CuerpoCentral";
 import FormularioEntorno from "./entorno/FormularioEntorno";
-import DatosEditar from "./inicio/DatosEditar";
 import IniciarSesion from "./inicio/IniciarSesion";
-import Registrarse from "./inicio/Registrarse";
 import ListaTarjetas from "./ListaTarjetas";
 import Navbar from "./Navbar";
 import Titulo from "./Titulo";
@@ -13,6 +11,8 @@ import Swal from "sweetalert2";
 import * as servicio from "./servicios/empleadoService";
 import * as tareaServicio from "./servicios/tareasServicio";
 import ModalRegistrarse from "./inicio/ModalRegistrarse";
+import ModalEditar from "./inicio/ModalEditar";
+import ModalCrearEnlace from "./entorno/ModalCrearEnlace";
 
 const Contenedor = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
@@ -71,6 +71,16 @@ const Contenedor = () => {
     handleNavbar();
   };
 
+  //Tratamiento de enlaces
+  const agregarEnlace = (nuevoEnlace) => {
+    let listaEnlaces = empleado.entorno;
+    listaEnlaces = [...listaEnlaces, nuevoEnlace];
+    console.log(listaEnlaces);
+    setTareas(listaEnlaces);
+    let nuevoEmpleado = empleado;
+    nuevoEmpleado.entorno = listaEnlaces;
+    setEmpleado(nuevoEmpleado);
+  };
   //Tratamiento de tareas
   const completarTarea = useCallback(
     (tarea) => {
@@ -198,9 +208,14 @@ const Contenedor = () => {
     let EmpleadoActivo = empleado;
     return (
       <>
-        <DatosEditar empleado={EmpleadoActivo} handleEditar={editarUsuario} />
-        <div></div>
-        <FormularioEntorno empleado={EmpleadoActivo} />
+        <div>
+          <ModalEditar empleado={EmpleadoActivo} handleEditar={editarUsuario} />
+          <ModalCrearEnlace agregarEnlace={agregarEnlace} />
+        </div>
+        <FormularioEntorno
+          empleado={EmpleadoActivo}
+          agregarEnlace={agregarEnlace}
+        />
       </>
     );
   };

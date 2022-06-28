@@ -89,7 +89,7 @@ export default function TransitionsModal({ funcionBoton }) {
             <Typography
               id="transition-modal-title"
               variant="h6"
-              component="h2"
+              component="h1"
               className="c1"
             >
               Agregar Tarea
