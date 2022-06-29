@@ -26,27 +26,22 @@ export const registrarEmpleado = async (empleado) => {
     puesto: empleado.puesto,
     entorno: [],
     tareas: [],
-    tareasConcluidas: [],
   });
 };
 
 export const editarEmpleado = async (empleado) => {
-  return await axios.post("http://localhost:3001/api/empleados/CrearEmpleado", {
+  const id = empleado.id;
+  return await axios.put(`http://localhost:3001/api/empleados/${id}`, {
     nombre: empleado.nombre,
     apellido: empleado.apellido,
     mail: empleado.mail,
     pais: empleado.pais,
     nacimiento: empleado.nacimiento,
-    contraseña: empleado.contraseña,
     puesto: empleado.puesto,
-    entorno: [],
-    tareas: [],
-    tareasConcluidas: [],
   });
 };
 
 export const existeMail = async (mail) => {
-  console.log(mail);
   return await axios
     .post("http://localhost:3001/api/empleados/ExisteMail", {
       mail: mail,

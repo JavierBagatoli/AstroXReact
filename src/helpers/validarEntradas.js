@@ -28,6 +28,11 @@ export function constraseñaValida(constraseña, error) {
   return "";
 }
 
+function contraseñaFomato(str) {
+  var re = /(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}/;
+  return re.test(str);
+}
+
 export function mailValido(mail) {
   //const mail = "juan@gmail.com"
   if (mail.length < 5) {
@@ -81,3 +86,48 @@ export function validarNacimiento(fecha) {
   }
   return texto;
 }
+
+//29/08/2022 Javier bagatoli
+export const listarErrores = (empleado) => {
+  let vectorErrores = [];
+  if (empleado.contraseña !== empleado.contraseñaRep) {
+    vectorErrores[0] = "Las contraseñas no son iguales";
+  }
+  if (
+    !constraseñaValida(empleado.contraseñaRep) &&
+    empleado.contraseñaRep !== ""
+  ) {
+    vectorErrores[1] =
+      "Contraseña repetida no valido, solo usar letras y espacios";
+  }
+  if (!constraseñaValida(empleado.contraseña) && empleado.contraseña !== "") {
+    vectorErrores[2] = "Contraseña  no valida, solo usar letras y espacios";
+  }
+  vectorErrores[3] = entradaValida(
+    empleado.puesto,
+    "Puesto no valido, solo usar letras y espacios"
+  );
+
+  vectorErrores[4] = entradaValida(
+    empleado.pais,
+    "Pais no valido, solo usar letras y espacios"
+  );
+
+  vectorErrores[5] = validarNacimiento(empleado.nacimiento);
+
+  if (!mailValido(empleado.mail)) {
+    vectorErrores = "Mail no valido, solo usar letras y espacios";
+  } else {
+  }
+
+  vectorErrores[6] = entradaValida(
+    empleado.apellido,
+    "Apellido no valido, solo usar letras y espacios"
+  );
+
+  vectorErrores[7] = entradaValida(
+    empleado.nombre,
+    "Nombre no valido, solo usar letras y espacios"
+  );
+  return vectorErrores;
+};

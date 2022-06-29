@@ -17,7 +17,7 @@ const Registrarse = ({ handleRegistrar }) => {
   const mailRef = useRef("");
   const paisRef = useRef("");
   const puestoRef = useRef("");
-  const edadRef = useRef(0);
+  const nacimientoRef = useRef(0);
   const passwordRef = useRef("");
   const passwordRepRef = useRef("");
 
@@ -48,13 +48,12 @@ const Registrarse = ({ handleRegistrar }) => {
       "Pais no valido, solo usar letras y espacios"
     );
 
-    vectorErrores[5] = validarNacimiento(edadRef.current.valueAsNumber);
+    vectorErrores[5] = validarNacimiento(nacimientoRef.current.valueAsNumber);
 
     if (!mailValido(mailRef.current.value)) {
       vectorErrores[6] = "Correo no valido, solo usar letras y espacios";
     } else {
       let res = await servicio.existeMail(mailRef.current.value);
-      console.log(res);
       if (res === "Ya existe") {
         alert();
         vectorErrores[7] = "Mail ya ocupado";
@@ -98,7 +97,7 @@ const Registrarse = ({ handleRegistrar }) => {
         pais: paisRef.current.value,
         puesto: puestoRef.current.value,
         contraseña: hash,
-        nacimiento: edadRef.current.valueAsNumber,
+        nacimiento: nacimientoRef.current.valueAsNumber,
         entorno: [],
         tareas: [],
         tareasConcluidas: [],
@@ -170,7 +169,7 @@ const Registrarse = ({ handleRegistrar }) => {
           <div className="c6 columnas-2">
             <label className="c-1">Fecha nacimiento:</label>
             <input
-              ref={edadRef}
+              ref={nacimientoRef}
               className="input-agregar-tarea c-2"
               type="date"
             />

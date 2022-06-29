@@ -30,7 +30,7 @@ export default function ModalEditar({ empleado, handleEditar }) {
         color="primary"
         onClick={handleOpen}
       >
-        Editar empleado
+        Editar datos
       </Button>
 
       <Modal

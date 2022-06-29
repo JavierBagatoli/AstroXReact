@@ -13,6 +13,7 @@ import * as tareaServicio from "./servicios/tareasServicio";
 import ModalRegistrarse from "./inicio/ModalRegistrarse";
 import ModalEditar from "./inicio/ModalEditar";
 import ModalCrearEnlace from "./entorno/ModalCrearEnlace";
+import withReactContent from "sweetalert2-react-content";
 
 const Contenedor = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
@@ -31,7 +32,6 @@ const Contenedor = () => {
 
   const handleLogin = async (mail, contraseña) => {
     const empleado = await servicio.getEmpleado(mail, contraseña);
-    console.log(empleado.respuesta);
     if (empleado?.respuesta === "Error al iniciar sesión") {
       Swal.fire({
         title: "Datos incorrectos",
@@ -54,16 +54,31 @@ const Contenedor = () => {
     }
   };
 
-  const editarUsuario = useCallback(
-    (empleadoEditado) => {
-      let baseDatosNueva = baseDeDatos.filter(
-        (empleado) => empleado.id !== empleadoEditado.id
-      );
-      baseDatosNueva = [...baseDatosNueva, empleadoEditado];
-      setBaseDeDatos(baseDatosNueva);
-    },
-    [baseDeDatos]
-  );
+  const editarUsuario = useCallback(async (empleadoEditado) => {
+    const resEdit = await servicio.editarEmpleado(empleadoEditado);
+    setEmpleado(empleadoEditado);
+
+    const MySwal = withReactContent(Swal);
+    if (resEdit.data.message === "Empleado actualizado") {
+      MySwal.fire({
+        text: "Actualización exitosa",
+        icon: "success",
+        background: "#3f1a2b",
+        color: "white",
+        confirmButtonText: "Entendido",
+        showCloseButton: "true",
+      });
+    } else {
+      MySwal.fire({
+        text: "Actualización fallida",
+        icon: "error",
+        background: "#3f1a2b",
+        color: "white",
+        confirmButtonText: "Entendido",
+        showCloseButton: "true",
+      });
+    }
+  }, []);
 
   const cerrarSesion = () => {
     setSesionIniciada(false);
@@ -75,7 +90,6 @@ const Contenedor = () => {
   const agregarEnlace = (nuevoEnlace) => {
     let listaEnlaces = empleado.entorno;
     listaEnlaces = [...listaEnlaces, nuevoEnlace];
-    console.log(listaEnlaces);
     setTareas(listaEnlaces);
     let nuevoEmpleado = empleado;
     nuevoEmpleado.entorno = listaEnlaces;

@@ -1,15 +1,8 @@
 //Codigo creado por Javier Bagatoli el dia 08/06/2022
 
 import React, { useEffect, useRef, useState } from "react";
-import {
-  entradaValida,
-  constraseñaValida,
-  mailValido,
-  validarNacimiento,
-} from "../../helpers/validarEntradas";
+import { listarErrores } from "../../helpers/validarEntradas";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import * as servicio from "../servicios/empleadoService";
 
 const bcrypt = require("bcryptjs");
 
@@ -21,7 +14,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
   const mailRef = useRef("");
   const paisRef = useRef("");
   const puestoRef = useRef("");
-  const edadRef = useRef(0);
+  const nacimientoRef = useRef(0);
   const passwordRef = useRef("");
   const passwordRepRef = useRef("");
 
@@ -31,67 +24,41 @@ const DatosEditar = ({ empleado, handleEditar }) => {
     mailRef.current.value = datosEmpleado.mail;
     paisRef.current.value = datosEmpleado.pais;
     puestoRef.current.value = datosEmpleado.puesto;
-    edadRef.current.valueAsNumber = datosEmpleado.edad;
+    nacimientoRef.current.valueAsNumber = datosEmpleado.nacimiento;
     passwordRef.current.value = "";
     passwordRepRef.current.value = "";
   }, [datosEmpleado]);
 
   const validar = async () => {
-    let vectorErrores = "";
+    let vectorErrores = [];
+    let dtoEmpleado = {
+      nombre: nombreRef.current.value,
+      apellido: apellidoRef.current.value,
+      mail: mailRef.current.value,
+      pais: paisRef.current.value,
+      puesto: puestoRef.current.value,
+      nacimiento: nacimientoRef.current.valueAsNumber,
+      contraseña: passwordRef.current.value,
+      contraseñaRep: passwordRepRef.current.value,
+    };
 
-    if (passwordRef.current.value !== passwordRepRef.current.value) {
-      vectorErrores = "Las contraseñas no son iguales";
-    }
-    if (
-      !constraseñaValida(passwordRepRef.current.value) &&
-      passwordRepRef.current.value !== ""
-    ) {
-      vectorErrores =
-        "Contraseña repetida no valido, solo usar letras y espacios";
-    }
-    if (
-      !constraseñaValida(passwordRef.current.value) &&
-      passwordRef.current.value !== ""
-    ) {
-      vectorErrores = "Contraseña  no valida, solo usar letras y espacios";
-    }
-    vectorErrores = entradaValida(
-      puestoRef.current.value,
-      "Puesto no valido, solo usar letras y espacios"
+    vectorErrores = listarErrores(dtoEmpleado);
+
+    let idBanderaFallida = vectorErrores.findIndex(
+      (bandera) => bandera !== undefined && bandera !== ""
     );
 
-    vectorErrores = entradaValida(
-      paisRef.current.value,
-      "Pais no valido, solo usar letras y espacios"
-    );
-
-    vectorErrores = validarNacimiento(edadRef.current.valueAsNumber);
-
-    if (!mailValido(mailRef.current.value)) {
-      vectorErrores = "Mail no valido, solo usar letras y espacios";
-    } else {
+    if (idBanderaFallida !== -1) {
+      Swal.fire({
+        title: "Actualización fallida",
+        text: vectorErrores,
+        icon: "error",
+        confirmButtonText: "Cerrar",
+      });
     }
-
-    vectorErrores = entradaValida(
-      apellidoRef.current.value,
-      "Apellido no valido, solo usar letras y espacios"
-    );
-
-    vectorErrores = entradaValida(
-      nombreRef.current.value,
-      "Nombre no valido, solo usar letras y espacios"
-    );
-
-    Swal.fire({
-      title: "Actualización fallida",
-      text: vectorErrores,
-      icon: "error",
-      confirmButtonText: "Cerrar",
-    });
-
-    let hash;
 
     //Encriptar contraseña
+    let hash;
     if (passwordRef.current.value !== "") {
       var salt = bcrypt.genSaltSync(10);
       hash = bcrypt.hashSync(passwordRef.current.value, salt);
@@ -99,36 +66,22 @@ const DatosEditar = ({ empleado, handleEditar }) => {
       hash = datosEmpleado.contrasenia;
     }
 
-    if (vectorErrores === "") {
-      let empleado = {
-        id: datosEmpleado.id,
+    if (idBanderaFallida === -1) {
+      let empleadoEditado = {
+        id: empleado._id || empleado.id,
         nombre: nombreRef.current.value,
         apellido: apellidoRef.current.value,
         mail: mailRef.current.value,
         pais: paisRef.current.value,
         puesto: puestoRef.current.value,
-        contraseña: hash,
-        nacimiento: edadRef.current.valueAsNumber,
+        //contraseña: hash,
+        nacimiento: nacimientoRef.current.valueAsNumber,
         entorno: [],
         tareas: [],
         tareasConcluidas: [],
       };
-      setDatosEmpleado(empleado);
-      const MySwal = withReactContent(Swal);
-
-      MySwal.fire({
-        text: "En desarrollo",
-        icon: "info",
-        background: "#3f1a2b",
-        color: "white",
-        confirmButtonText: "Entendido",
-        showCloseButton: "true",
-        imageUrl:
-          "https://media0.giphy.com/media/DfxP2AmhATn6XTwipc/giphy.gif?cid=790b76113a1119f47fedd5f9cc16ea0cf9e2fdb59286b81e&rid=giphy.gif&ct=g",
-        imageHeight: "250px",
-      });
-
-      handleEditar(empleado);
+      setDatosEmpleado(empleadoEditado);
+      handleEditar(empleadoEditado);
     }
   };
   return (
@@ -185,7 +138,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
           <div className="c6 columnas-2">
             <label className="c-1">Fecha nacimiento:</label>
             <input
-              ref={edadRef}
+              ref={nacimientoRef}
               className="input-agregar-tarea c-2"
               type="date"
             />
