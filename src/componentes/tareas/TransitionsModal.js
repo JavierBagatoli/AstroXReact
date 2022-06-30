@@ -5,8 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { entradaValida } from "../../helpers/validarEntradas";
+import { textoValido } from "../../helpers/validarEntradas";
 
 const style = {
   position: "absolute",
@@ -37,11 +36,8 @@ export default function TransitionsModal({ funcionBoton }) {
   };
 
   const handleCrearTarea = () => {
-    let nombreValido = entradaValida(
-      nombreRef.current.value,
-      "Nombre invalido"
-    );
-    let descripcionValida = entradaValida(
+    let nombreValido = textoValido(nombreRef.current.value, "Nombre invalido");
+    let descripcionValida = textoValido(
       descripcionRef.current.value,
       "Descripcion invalida"
     );
@@ -96,13 +92,13 @@ export default function TransitionsModal({ funcionBoton }) {
             </Typography>
             <input
               type="text"
-              useRef={nombreRef}
+              ref={nombreRef}
               placeholder="Nombre"
               className="input-moda c2"
             ></input>
             <input
               type="text"
-              useRef={descripcionRef}
+              ref={descripcionRef}
               placeholder="Descripción"
               className="input-moda c3"
             ></input>
@@ -148,7 +144,7 @@ export default function TransitionsModal({ funcionBoton }) {
                 id="transition-modal-fecha-finalizacion"
                 sx={{ mt: 2 }}
               >
-                Tanto el nombre como descripcion tienen que solo contener letras
+                Tanto el nombre como descripción tienen que solo contener letras
               </Typography>
             )}
           </Box>

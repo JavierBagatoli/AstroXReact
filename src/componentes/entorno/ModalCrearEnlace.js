@@ -47,7 +47,10 @@ export default function ModalCrearEnlace({ agregarEnlace }) {
       >
         <Fade in={open}>
           <Box sx={style} className="modal columna">
-            <CrearEnlace agregarEnlace={agregarEnlace} />
+            <CrearEnlace
+              handleClose={handleClose}
+              agregarEnlace={agregarEnlace}
+            />
           </Box>
         </Fade>
       </Modal>

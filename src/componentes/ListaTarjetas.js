@@ -4,9 +4,6 @@ import TarjetaInfoCompletada from "./tareas/TarjetaInfoCompletada";
 import TarjetaInfo from "./tareas/TarjetaInfo";
 
 const ListaTarjetas = ({ tipo, tareas, funcionBoton }) => {
-  const colorTarea = () => {
-    return "rojo";
-  };
   return (
     <div className="articulo">
       <h1 className="">{tipo ? "Tareas completadas" : "Tareas pendientes"}</h1>
@@ -21,13 +18,11 @@ const ListaTarjetas = ({ tipo, tareas, funcionBoton }) => {
               />
             ))
           : tareas.map((tarea) => {
-              let color = colorTarea();
               return (
                 <TarjetaInfo
                   key={tarea.fechaCreacion}
                   tarea={tarea}
                   funcionBoton={funcionBoton}
-                  color={color}
                 />
               );
             })}

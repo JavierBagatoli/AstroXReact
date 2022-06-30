@@ -1,14 +1,11 @@
-//Codigo creado por Javier Bagatoli el dia 08/06/2022
-
-import React, { useEffect, useRef, useState } from "react";
-import { listarErrores } from "../../helpers/validarEntradas";
+//Codigo creado por Javier Bagatoli el dia 02/06/2022
+import React, { useRef } from "react";
+import { validacionesDeRegistro } from "../../../helpers/validarEntradas";
 import Swal from "sweetalert2";
 
 const bcrypt = require("bcryptjs");
 
-const DatosEditar = ({ empleado, handleEditar }) => {
-  let [datosEmpleado, setDatosEmpleado] = useState(empleado);
-
+const Registrarse = ({ handleRegistrar }) => {
   const nombreRef = useRef("");
   const apellidoRef = useRef("");
   const mailRef = useRef("");
@@ -17,17 +14,6 @@ const DatosEditar = ({ empleado, handleEditar }) => {
   const nacimientoRef = useRef(0);
   const passwordRef = useRef("");
   const passwordRepRef = useRef("");
-
-  useEffect(() => {
-    nombreRef.current.value = datosEmpleado.nombre;
-    apellidoRef.current.value = datosEmpleado.apellido;
-    mailRef.current.value = datosEmpleado.mail;
-    paisRef.current.value = datosEmpleado.pais;
-    puestoRef.current.value = datosEmpleado.puesto;
-    nacimientoRef.current.valueAsNumber = datosEmpleado.nacimiento;
-    passwordRef.current.value = "";
-    passwordRepRef.current.value = "";
-  }, [datosEmpleado]);
 
   const validar = async () => {
     let vectorErrores = [];
@@ -42,60 +28,63 @@ const DatosEditar = ({ empleado, handleEditar }) => {
       contraseñaRep: passwordRepRef.current.value,
     };
 
-    vectorErrores = listarErrores(dtoEmpleado);
-
+    vectorErrores = await validacionesDeRegistro(dtoEmpleado);
+    console.log("vector devuelto", vectorErrores);
     let idBanderaFallida = vectorErrores.findIndex(
       (bandera) => bandera !== undefined && bandera !== ""
     );
 
     if (idBanderaFallida !== -1) {
       Swal.fire({
-        title: "Actualización fallida",
-        text: vectorErrores,
+        title: "Registro fallido",
+        text: vectorErrores[idBanderaFallida],
         icon: "error",
+        background: "#192649",
+        color: "white",
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#37202b",
       });
     }
 
-    //Encriptar contraseña
-    let hash;
-    if (passwordRef.current.value !== "") {
-      var salt = bcrypt.genSaltSync(10);
-      hash = bcrypt.hashSync(passwordRef.current.value, salt);
-    } else {
-      hash = datosEmpleado.contrasenia;
-    }
-
     if (idBanderaFallida === -1) {
-      let empleadoEditado = {
-        id: empleado._id || empleado.id,
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync(passwordRef.current.value, salt);
+      let nuevoEmpleado = {
+        id: Date.now(),
         nombre: nombreRef.current.value,
         apellido: apellidoRef.current.value,
         mail: mailRef.current.value,
         pais: paisRef.current.value,
         puesto: puestoRef.current.value,
-        //contraseña: hash,
+        contraseña: hash,
         nacimiento: nacimientoRef.current.valueAsNumber,
         entorno: [],
         tareas: [],
         tareasConcluidas: [],
       };
-      setDatosEmpleado(empleadoEditado);
-      handleEditar(empleadoEditado);
+      Swal.fire({
+        title: "Registro completado",
+        icon: "success",
+        background: "#3f1a2b",
+        color: "white",
+        confirmButtonText: "ok",
+      });
+      handleRegistrar(nuevoEmpleado);
     }
   };
+
   return (
     <div>
-      <div className="articulo login card">
-        <h1 className="card-header text-center">Datos</h1>
-        <div className="card-body list-group columna">
+      <div className="articulo login">
+        <h1 className="">Registrarse</h1>
+        <div className="columna">
           <div className="c1 columnas-2">
             <label className="c-1">Nombre:</label>
             <input
               ref={nombreRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Nombre"
+              placeholder="Ej: Manuel"
             />
           </div>
           <div className="c2 columnas-2">
@@ -104,7 +93,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
               ref={apellidoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Apellido"
+              placeholder="Ej: García"
             />
           </div>
           <div className="c3 columnas-2">
@@ -113,7 +102,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
               ref={mailRef}
               className="input-agregar-tarea c-2"
               type="email"
-              placeholder="Correo"
+              placeholder="mgarcia@gmail.com"
               pattern=".+@+.com"
               size="30"
               required
@@ -125,7 +114,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
               ref={puestoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Puesto"
+              placeholder="Ej: Gerente"
             />
           </div>
           <div className="c5 columnas-2">
@@ -133,6 +122,8 @@ const DatosEditar = ({ empleado, handleEditar }) => {
             <select ref={paisRef} className="input-agregar-tarea c-2 ampliar">
               <option value="Argentina">Argentina</option>
               <option value="Chile">Chile</option>
+              <option value="Venezuela">Venezuela</option>
+              <option value="Colombia">Colombia</option>
             </select>
           </div>
           <div className="c6 columnas-2">
@@ -162,7 +153,7 @@ const DatosEditar = ({ empleado, handleEditar }) => {
             />
           </div>
           <button onClick={() => validar()} className="boton  boton-centrar c9">
-            Modificar
+            Registrar
           </button>
         </div>
       </div>
@@ -170,4 +161,4 @@ const DatosEditar = ({ empleado, handleEditar }) => {
   );
 };
 
-export default DatosEditar;
+export default Registrarse;

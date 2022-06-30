@@ -1,17 +1,18 @@
-//Codigo creado por Javier Bagatoli el dia 02/06/2022
-import React, { useRef } from "react";
-import {
-  entradaValida,
-  constraseñaValida,
-  mailValido,
-  validarNacimiento,
-} from "../../helpers/validarEntradas";
+//Codigo creado por Javier Bagatoli el dia 08/06/2022
+
+import React, { useEffect, useRef, useState } from "react";
+import { validacionesDeEditar } from "../../../helpers/validarEntradas";
 import Swal from "sweetalert2";
-import * as servicio from "../servicios/empleadoService";
 
 const bcrypt = require("bcryptjs");
 
-const Registrarse = ({ handleRegistrar }) => {
+const DatosEditar = ({
+  empleado,
+  handleEditar,
+  handleActualizarContraseña,
+}) => {
+  let [datosEmpleado, setDatosEmpleado] = useState(empleado);
+
   const nombreRef = useRef("");
   const apellidoRef = useRef("");
   const mailRef = useRef("");
@@ -21,110 +22,87 @@ const Registrarse = ({ handleRegistrar }) => {
   const passwordRef = useRef("");
   const passwordRepRef = useRef("");
 
+  useEffect(() => {
+    nombreRef.current.value = datosEmpleado.nombre;
+    apellidoRef.current.value = datosEmpleado.apellido;
+    mailRef.current.value = datosEmpleado.mail;
+    paisRef.current.value = datosEmpleado.pais;
+    puestoRef.current.value = datosEmpleado.puesto;
+    nacimientoRef.current.valueAsNumber = datosEmpleado.nacimiento;
+    passwordRef.current.value = "";
+    passwordRepRef.current.value = "";
+  }, [datosEmpleado]);
+
   const validar = async () => {
     let vectorErrores = [];
+    let dtoEmpleado = {
+      nombre: nombreRef.current.value,
+      apellido: apellidoRef.current.value,
+      mail: mailRef.current.value,
+      pais: paisRef.current.value,
+      puesto: puestoRef.current.value,
+      nacimiento: nacimientoRef.current.valueAsNumber,
+      contraseña: passwordRef.current.value,
+      contraseñaRep: passwordRepRef.current.value,
+    };
 
-    if (passwordRef.current.value !== passwordRepRef.current.value) {
-      vectorErrores[0] = "Las contraseñas no son iguales";
-    }
+    vectorErrores = await validacionesDeEditar(dtoEmpleado, empleado.mail);
 
-    vectorErrores[1] = constraseñaValida(
-      passwordRepRef.current.value,
-      "Contraseña repetida no valido, debe contener al menos 8 caracteres"
-    );
-
-    vectorErrores[2] = constraseñaValida(
-      passwordRef.current.value,
-      "Contraseña no valida, debe contener al menos 8 caracteres"
-    );
-
-    vectorErrores[3] = entradaValida(
-      puestoRef.current.value,
-      "Puesto no valido, solo usar letras y espacios"
-    );
-
-    vectorErrores[4] = entradaValida(
-      paisRef.current.value,
-      "Pais no valido, solo usar letras y espacios"
-    );
-
-    vectorErrores[5] = validarNacimiento(nacimientoRef.current.valueAsNumber);
-
-    if (!mailValido(mailRef.current.value)) {
-      vectorErrores[6] = "Correo no valido, solo usar letras y espacios";
-    } else {
-      let res = await servicio.existeMail(mailRef.current.value);
-      if (res === "Ya existe") {
-        alert();
-        vectorErrores[7] = "Mail ya ocupado";
-      }
-    }
-
-    vectorErrores[8] = entradaValida(
-      apellidoRef.current.value,
-      "Apellido no valido, solo usar letras y espacios"
-    );
-
-    vectorErrores[9] = entradaValida(
-      nombreRef.current.value,
-      "Nombre no valido, solo usar letras y espacios"
-    );
-
-    let idBanderaFallida = vectorErrores.findIndex(
+    let idBanderaFallida = await vectorErrores.findIndex(
       (bandera) => bandera !== undefined && bandera !== ""
     );
 
     if (idBanderaFallida !== -1) {
       Swal.fire({
-        title: "Registro fallido",
-        text: vectorErrores[idBanderaFallida],
+        title: "Actualización fallida",
+        text: vectorErrores,
         icon: "error",
-        background: "#192649",
-        color: "white",
         confirmButtonText: "Cerrar",
-        confirmButtonColor: "#37202b",
       });
     }
 
-    if (idBanderaFallida === -1) {
+    //Encriptar contraseña
+    let hash;
+    if (passwordRef.current.value !== "") {
       var salt = bcrypt.genSaltSync(10);
-      var hash = bcrypt.hashSync(passwordRef.current.value, salt);
-      let nuevoEmpleado = {
-        id: Date.now(),
+      hash = bcrypt.hashSync(passwordRef.current.value, salt);
+    } else {
+      hash = datosEmpleado.contrasenia;
+    }
+
+    if (idBanderaFallida === -1) {
+      let empleadoEditado = {
+        id: empleado._id || empleado.id,
         nombre: nombreRef.current.value,
         apellido: apellidoRef.current.value,
         mail: mailRef.current.value,
         pais: paisRef.current.value,
         puesto: puestoRef.current.value,
-        contraseña: hash,
         nacimiento: nacimientoRef.current.valueAsNumber,
         entorno: [],
         tareas: [],
         tareasConcluidas: [],
       };
-      Swal.fire({
-        title: "Registro completado",
-        icon: "success",
-        background: "#3f1a2b",
-        color: "white",
-        confirmButtonText: "ok",
-      });
-      handleRegistrar(nuevoEmpleado);
+      if (passwordRef.current.value !== "") {
+        let nuevaContraseña = hash;
+        handleActualizarContraseña(nuevaContraseña);
+      }
+      setDatosEmpleado(empleadoEditado);
+      handleEditar(empleadoEditado);
     }
   };
-
   return (
     <div>
-      <div className="articulo login">
-        <h1 className="">Registrarse</h1>
-        <div className="columna">
+      <div className="articulo login card">
+        <h1 className="card-header text-center">Datos</h1>
+        <div className="card-body list-group columna">
           <div className="c1 columnas-2">
             <label className="c-1">Nombre:</label>
             <input
               ref={nombreRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Ej: Manuel"
+              placeholder="Nombre"
             />
           </div>
           <div className="c2 columnas-2">
@@ -133,7 +111,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={apellidoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Ej: García"
+              placeholder="Apellido"
             />
           </div>
           <div className="c3 columnas-2">
@@ -142,7 +120,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={mailRef}
               className="input-agregar-tarea c-2"
               type="email"
-              placeholder="mgarcia@gmail.com"
+              placeholder="Correo"
               pattern=".+@+.com"
               size="30"
               required
@@ -154,7 +132,7 @@ const Registrarse = ({ handleRegistrar }) => {
               ref={puestoRef}
               className="input-agregar-tarea c-2"
               type="text"
-              placeholder="Ej: Gerente"
+              placeholder="Puesto"
             />
           </div>
           <div className="c5 columnas-2">
@@ -162,8 +140,6 @@ const Registrarse = ({ handleRegistrar }) => {
             <select ref={paisRef} className="input-agregar-tarea c-2 ampliar">
               <option value="Argentina">Argentina</option>
               <option value="Chile">Chile</option>
-              <option value="Venezuela">Argentina</option>
-              <option value="Colombia">Chile</option>
             </select>
           </div>
           <div className="c6 columnas-2">
@@ -193,7 +169,7 @@ const Registrarse = ({ handleRegistrar }) => {
             />
           </div>
           <button onClick={() => validar()} className="boton  boton-centrar c9">
-            Agregar
+            Modificar
           </button>
         </div>
       </div>
@@ -201,4 +177,4 @@ const Registrarse = ({ handleRegistrar }) => {
   );
 };
 
-export default Registrarse;
+export default DatosEditar;

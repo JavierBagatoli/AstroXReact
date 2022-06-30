@@ -1,19 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
-const CrearEnlace = ({ agregarEnlace }) => {
+const CrearEnlace = ({ agregarEnlace, handleClose }) => {
+  const [aperturaRapida, setAperturaRapida] = useState(false);
   const refApodo = useRef("");
   const refEnlace = useRef("");
-  const refAperturaRapida = useRef("");
 
   const handleCrearEnlace = () => {
     let nuevoEnlace = {
-      id: 3,
+      id: Date.now(),
       apodo: refApodo.current.value,
       direccion: refEnlace.current.value,
-      prioridad: false,
+      prioridad: aperturaRapida,
     };
 
     agregarEnlace(nuevoEnlace);
+    handleClose();
   };
   return (
     <>
@@ -31,18 +32,28 @@ const CrearEnlace = ({ agregarEnlace }) => {
         placeholder="Enlace"
       ></input>
       <p className="centrar c4">
-        <input type="checkbox"></input>
+        <input
+          onClick={() => setAperturaRapida(!aperturaRapida)}
+          type="checkbox"
+        ></input>
         Apertura rapida
       </p>
       <div className="centrar c5">
         <button
-          ref={refAperturaRapida}
           onClick={() => {
             handleCrearEnlace();
           }}
-          className="boton"
+          className="boton boton-modal boton-verde item1"
         >
           Crear
+        </button>
+        <button
+          onClick={() => {
+            handleClose();
+          }}
+          className="boton boton-modal boton-rojo item2"
+        >
+          Cerrar
         </button>
       </div>
     </>

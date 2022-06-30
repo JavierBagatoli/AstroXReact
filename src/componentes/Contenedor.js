@@ -2,32 +2,32 @@
 
 import React, { useCallback, useState } from "react";
 import CuerpoCentral from "./CuerpoCentral";
-import FormularioEntorno from "./entorno/FormularioEntorno";
-import IniciarSesion from "./inicio/IniciarSesion";
+import ListaEnlaces from "./entorno/ListaEnlaces";
+import IniciarSesion from "./formulariosEmpleado/IniciarSesion";
 import ListaTarjetas from "./ListaTarjetas";
 import Navbar from "./Navbar";
 import Titulo from "./Titulo";
 import Swal from "sweetalert2";
 import * as servicio from "./servicios/empleadoService";
 import * as tareaServicio from "./servicios/tareasServicio";
-import ModalRegistrarse from "./inicio/ModalRegistrarse";
-import ModalEditar from "./inicio/ModalEditar";
+import * as enlaceServicio from "./servicios/enlaceServicio";
+import ModalRegistrarse from "./formulariosEmpleado/ModalRegistrarse";
+import ModalEditar from "./formulariosEmpleado/ModalEditar";
 import ModalCrearEnlace from "./entorno/ModalCrearEnlace";
 import withReactContent from "sweetalert2-react-content";
 
 const Contenedor = () => {
   const [sesionIniciada, setSesionIniciada] = useState(false);
-  const [baseDeDatos, setBaseDeDatos] = useState([]);
   const [empleado, setEmpleado] = useState(null);
   const [tareas, setTareas] = useState([]);
   const [tareasCompletas, setTareasCompletas] = useState([]);
   const [pagina, setPagina] = useState("");
 
+  const MySwal = withReactContent(Swal);
+
   //Tratamiento del empleado
   const handleRegistrar = (nuevoEmpleado) => {
-    let NuevaBaseDeDatos = [...baseDeDatos, nuevoEmpleado];
     servicio.registrarEmpleado(nuevoEmpleado);
-    setBaseDeDatos(NuevaBaseDeDatos);
   };
 
   const handleLogin = async (mail, contraseña) => {
@@ -54,31 +54,38 @@ const Contenedor = () => {
     }
   };
 
-  const editarUsuario = useCallback(async (empleadoEditado) => {
-    const resEdit = await servicio.editarEmpleado(empleadoEditado);
-    setEmpleado(empleadoEditado);
+  const editarUsuario = useCallback(
+    async (empleadoEditado) => {
+      const resEdit = await servicio.editarEmpleado(empleadoEditado);
+      setEmpleado(empleadoEditado);
 
-    const MySwal = withReactContent(Swal);
-    if (resEdit.data.message === "Empleado actualizado") {
-      MySwal.fire({
-        text: "Actualización exitosa",
-        icon: "success",
-        background: "#3f1a2b",
-        color: "white",
-        confirmButtonText: "Entendido",
-        showCloseButton: "true",
-      });
-    } else {
-      MySwal.fire({
-        text: "Actualización fallida",
-        icon: "error",
-        background: "#3f1a2b",
-        color: "white",
-        confirmButtonText: "Entendido",
-        showCloseButton: "true",
-      });
-    }
-  }, []);
+      if (resEdit.data.message === "Empleado actualizado") {
+        MySwal.fire({
+          text: "Actualización exitosa",
+          icon: "success",
+          background: "#3f1a2b",
+          color: "white",
+          confirmButtonText: "Entendido",
+          showCloseButton: "true",
+        });
+      } else {
+        MySwal.fire({
+          text: "Actualización fallida",
+          icon: "error",
+          background: "#3f1a2b",
+          color: "white",
+          confirmButtonText: "Entendido",
+          showCloseButton: "true",
+        });
+      }
+    },
+    [MySwal]
+  );
+
+  const handleActualizarContraseña = async (nuevaContraseña) => {
+    await servicio.actualizarContraseña(nuevaContraseña, empleado);
+    alert("activado");
+  };
 
   const cerrarSesion = () => {
     setSesionIniciada(false);
@@ -89,12 +96,55 @@ const Contenedor = () => {
   //Tratamiento de enlaces
   const agregarEnlace = (nuevoEnlace) => {
     let listaEnlaces = empleado.entorno;
-    listaEnlaces = [...listaEnlaces, nuevoEnlace];
-    setTareas(listaEnlaces);
-    let nuevoEmpleado = empleado;
-    nuevoEmpleado.entorno = listaEnlaces;
-    setEmpleado(nuevoEmpleado);
+    if (nuevoEnlace.prioridad) {
+      const cantidad = listaEnlaces.filter(
+        (enlace) => enlace.prioridad === true
+      );
+
+      if (cantidad.length <= 3) {
+        enlaceServicio.agregarEnlace(nuevoEnlace, empleado.mail);
+        listaEnlaces = [...listaEnlaces, nuevoEnlace];
+        agregarEnlaces(listaEnlaces);
+      } else {
+        MySwal.fire({
+          text: "No se pueden agregar más de tres enlaces con apertura rápida",
+          icon: "error",
+          background: "#3f1a2b",
+          color: "white",
+          confirmButtonText: "Entendido",
+          showCloseButton: "true",
+        });
+      }
+    } else {
+      enlaceServicio.agregarEnlace(nuevoEnlace, empleado.mail);
+      listaEnlaces = [...listaEnlaces, nuevoEnlace];
+      agregarEnlaces(listaEnlaces);
+    }
   };
+
+  const agregarEnlaces = useCallback(
+    (listaEnlaces) => {
+      let nuevoEmpleado = empleado;
+      nuevoEmpleado.entorno = listaEnlaces;
+      setEmpleado(nuevoEmpleado);
+    },
+    [empleado]
+  );
+
+  const eliminarEnlace = useCallback(
+    (enlace) => {
+      enlaceServicio.eliminarEnlace(enlace, empleado.mail);
+      const nuevaListaEnlaces = empleado.entorno.filter(
+        (enlaceAnteriores) => enlaceAnteriores.id !== enlace.id
+      );
+
+      let empleadoActualizado = empleado;
+      empleadoActualizado.entorno = nuevaListaEnlaces;
+      setEmpleado(empleadoActualizado);
+    },
+    [empleado]
+  );
+
   //Tratamiento de tareas
   const completarTarea = useCallback(
     (tarea) => {
@@ -219,17 +269,17 @@ const Contenedor = () => {
   };
 
   const menuUsuario = () => {
-    let EmpleadoActivo = empleado;
     return (
       <>
         <div>
-          <ModalEditar empleado={EmpleadoActivo} handleEditar={editarUsuario} />
+          <ModalEditar
+            empleado={empleado}
+            handleEditar={editarUsuario}
+            handleActualizarContraseña={handleActualizarContraseña}
+          />
           <ModalCrearEnlace agregarEnlace={agregarEnlace} />
         </div>
-        <FormularioEntorno
-          empleado={EmpleadoActivo}
-          agregarEnlace={agregarEnlace}
-        />
+        <ListaEnlaces empleado={empleado} eliminarEnlace={eliminarEnlace} />
       </>
     );
   };

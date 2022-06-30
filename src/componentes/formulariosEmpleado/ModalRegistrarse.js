@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
-import Registrarse from "./Registrarse";
+import Registrarse from "./formularios/Registrarse";
 
 const style = {
   position: "absolute",
@@ -25,13 +25,15 @@ export default function ModalRegistrarse({ handleRegistrar }) {
 
   return (
     <div>
-      <Button
-        className="boton boton-centrar"
-        color="primary"
-        onClick={handleOpen}
-      >
-        Registrarse
-      </Button>
+      <div className="centrar espacioTop">
+        <Button
+          className="boton boton-centrar"
+          color="primary"
+          onClick={handleOpen}
+        >
+          Registrarse
+        </Button>
+      </div>
 
       <Modal
         aria-labelledby="transition-modal-title"

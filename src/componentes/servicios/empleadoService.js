@@ -1,11 +1,6 @@
 //Codigo creado por Javier Bagatoli el dia 20/06/2022
 import axios from "axios";
 
-export const getEmpleados = async () => {
-  return await axios
-    .get("http://localhost:3001/api/empleados/Empleados")
-    .then((res) => res.data.docs);
-};
 export const getEmpleado = async (mail, contraseña) => {
   return await axios
     .post("http://localhost:3001/api/empleados/Validar", {
@@ -47,4 +42,11 @@ export const existeMail = async (mail) => {
       mail: mail,
     })
     .then((res) => res.data.respuesta);
+};
+
+export const actualizarContraseña = async (nuevaContraseña, empleado) => {
+  const id = empleado.id;
+  return await axios.put(`http://localhost:3001/api/empleados/${id}`, {
+    contraseña: nuevaContraseña,
+  });
 };

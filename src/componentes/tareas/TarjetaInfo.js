@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function TarjetaInfo({ tarea, funcionBoton, color }) {
+export default function TarjetaInfo({ tarea, funcionBoton }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

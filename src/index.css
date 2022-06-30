@@ -162,7 +162,7 @@ body {
 }
 
 .item-tarea {
-  background-color: rgb(178, 73, 68, 0.5);
+  background-color: rgb(53, 63, 96, 0.5); /*rgb(178, 73, 68, 0.5);*/
   margin-top: -10px;
   margin-bottom: 20px;
   padding: 1px;
@@ -399,7 +399,7 @@ p {
   width: 330px;
 }
 
-::-webkit-calendar-picker-indicator {
+.input-agregar-tarea::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
@@ -421,4 +421,8 @@ p {
 
 .boton-verde {
   background-color: #1a3f21 !important;
+}
+
+.espacioTop {
+  margin-top: 35px;
 }
