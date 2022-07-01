@@ -14,7 +14,6 @@ export const agregarEnlace = async (enlace, email) => {
 };
 
 export const eliminarEnlace = async (enlace, email) => {
-  console.log("muestra", enlace);
   return await axios.put("http://localhost:3001/api/empleados/quitarEnlace", {
     mail: email,
     enlace: {

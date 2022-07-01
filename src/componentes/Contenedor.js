@@ -22,6 +22,7 @@ const Contenedor = () => {
   const [tareas, setTareas] = useState([]);
   const [tareasCompletas, setTareasCompletas] = useState([]);
   const [pagina, setPagina] = useState("");
+  const [enlaces, setEnlaces] = useState([]);
 
   const MySwal = withReactContent(Swal);
 
@@ -51,6 +52,7 @@ const Contenedor = () => {
       );
       setTareas(tareasPendientes);
       setTareasCompletas(tareasCompletadas);
+      setEnlaces(empleado.entorno);
     }
   };
 
@@ -127,6 +129,7 @@ const Contenedor = () => {
       let nuevoEmpleado = empleado;
       nuevoEmpleado.entorno = listaEnlaces;
       setEmpleado(nuevoEmpleado);
+      setEnlaces(listaEnlaces);
     },
     [empleado]
   );
@@ -141,6 +144,7 @@ const Contenedor = () => {
       let empleadoActualizado = empleado;
       empleadoActualizado.entorno = nuevaListaEnlaces;
       setEmpleado(empleadoActualizado);
+      setEnlaces(nuevaListaEnlaces);
     },
     [empleado]
   );
@@ -248,6 +252,22 @@ const Contenedor = () => {
     );
   };
 
+  const menuUsuario = () => {
+    return (
+      <>
+        <div>
+          <ModalEditar
+            empleado={empleado}
+            handleEditar={editarUsuario}
+            handleActualizarContraseña={handleActualizarContraseña}
+          />
+          <ModalCrearEnlace agregarEnlace={agregarEnlace} />
+        </div>
+        <ListaEnlaces entorno={enlaces} eliminarEnlace={eliminarEnlace} />
+      </>
+    );
+  };
+
   const configuarEmpleado = () => {
     setPagina("configuarEmpleado");
   };
@@ -264,22 +284,6 @@ const Contenedor = () => {
           accion1={configuarEmpleado}
           accion2={cerrarSesion}
         />
-      </>
-    );
-  };
-
-  const menuUsuario = () => {
-    return (
-      <>
-        <div>
-          <ModalEditar
-            empleado={empleado}
-            handleEditar={editarUsuario}
-            handleActualizarContraseña={handleActualizarContraseña}
-          />
-          <ModalCrearEnlace agregarEnlace={agregarEnlace} />
-        </div>
-        <ListaEnlaces empleado={empleado} eliminarEnlace={eliminarEnlace} />
       </>
     );
   };

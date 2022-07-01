@@ -29,7 +29,6 @@ const Registrarse = ({ handleRegistrar }) => {
     };
 
     vectorErrores = await validacionesDeRegistro(dtoEmpleado);
-    console.log("vector devuelto", vectorErrores);
     let idBanderaFallida = vectorErrores.findIndex(
       (bandera) => bandera !== undefined && bandera !== ""
     );

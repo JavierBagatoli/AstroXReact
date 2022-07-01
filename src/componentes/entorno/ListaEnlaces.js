@@ -1,14 +1,20 @@
 import React from "react";
 import Enlace from "./Enlace";
 
-const ListaEnlaces = ({ empleado, eliminarEnlace }) => {
+const ListaEnlaces = ({ entorno, eliminarEnlace }) => {
   return (
     <article className="articulo">
       <h1>Lista de enlaces</h1>
-      {empleado &&
-        empleado.entorno.map((enlace, index) => (
-          <Enlace enlace={enlace} key={index} eliminarEnlace={eliminarEnlace} />
-        ))}
+      {entorno !== undefined &&
+        entorno.map((enlace) => {
+          return (
+            <Enlace
+              enlace={enlace}
+              key={enlace.id}
+              eliminarEnlace={eliminarEnlace}
+            />
+          );
+        })}
     </article>
   );
 };
