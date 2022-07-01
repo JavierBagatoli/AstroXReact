@@ -38,6 +38,7 @@ const Contenedor = () => {
         title: "Datos incorrectos",
         text: empleado.respuesta,
         icon: "error",
+        background: "#3f1a2b",
         confirmButtonText: "Cerrar",
       });
     } else {
@@ -202,6 +203,28 @@ const Contenedor = () => {
     [tareas, empleado]
   );
 
+  const modificarTarea = useCallback(
+    () => {
+      Swal.fire({
+        title: "En desarrollo",
+        icon: "info",
+        background: "#3f1a2b",
+        color: "white",
+        confirmButtonText: "Ok",
+      });
+    }
+    /*
+    (tareaModificada) => {
+      tareaServicio.modificarTarea(tareaModificada, empleado.mail);
+      const listaTareasAntes = tareas.filter(
+        (tarea) => tarea.id !== tareaModificada.id
+      );
+      let nuevasTareas = [...tareas, listaTareasAntes];
+      setTareas(nuevasTareas);
+    },
+    [tareas, empleado]*/
+  );
+
   //Funciones de la pagina
 
   const handleAbrirEntorno = useCallback(() => {
@@ -226,6 +249,7 @@ const Contenedor = () => {
           tipo={null}
           tareas={tareas}
           funcionBoton={completarTarea}
+          funcionBotonDos={modificarTarea}
         />
         <CuerpoCentral
           funcionBoton={crearTarea}
@@ -235,6 +259,7 @@ const Contenedor = () => {
           tipo={eliminarTarea}
           tareas={tareasCompletas}
           funcionBoton={descompletarTarea}
+          funcionBotonDos={null}
         />
       </>
     );

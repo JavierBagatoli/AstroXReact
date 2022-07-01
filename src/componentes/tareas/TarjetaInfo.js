@@ -6,6 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CheckSVG from "../../svg/check.svg";
+import lapizEditar from "../../svg/lapizEditar.svg";
 
 const style = {
   position: "absolute",
@@ -19,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export default function TarjetaInfo({ tarea, funcionBoton }) {
+export default function TarjetaInfo({ tarea, funcionBoton, funcionBotonDos }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,7 +52,7 @@ export default function TarjetaInfo({ tarea, funcionBoton }) {
     }
     const fechaMax = fecha - diaHoy;
 
-    if (fechaMax < 86400000) {
+    if (fechaMax < 86400000 * 0.3) {
       return estilosDefault + " rojo-alerta";
     } else if (fechaMax < 86400000 * 3) {
       return estilosDefault + " rojo";
@@ -70,18 +71,35 @@ export default function TarjetaInfo({ tarea, funcionBoton }) {
         className={cierreProximo(tarea.fechaLimite)}
       >
         <p className="tarea-estilo">{tarea.titulo}</p>
-        <button
-          onClick={() => funcionBoton(tarea)}
-          className="boton-tarea"
-          title="Completará la tarea"
-        >
-          <img
-            className="svg"
-            src={CheckSVG}
-            alt="Terminar"
-            title="Terminar"
-          ></img>
-        </button>
+        <div className="container item2">
+          <button
+            onClick={() => funcionBoton(tarea)}
+            className="boton-tarea"
+            title="Completará la tarea"
+          >
+            <img
+              className="svg"
+              src={CheckSVG}
+              alt="Terminar"
+              title="Terminar"
+            ></img>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              funcionBotonDos();
+            }}
+            className="boton-tarea"
+            title="Completará la tarea"
+          >
+            <img
+              className="svg"
+              src={lapizEditar}
+              alt="Editar"
+              title="Editar"
+            ></img>
+          </button>
+        </div>
       </div>
 
       <Modal

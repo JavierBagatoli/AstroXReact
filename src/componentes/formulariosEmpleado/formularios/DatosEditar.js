@@ -57,6 +57,7 @@ const DatosEditar = ({
         title: "Actualización fallida",
         text: vectorErrores,
         icon: "error",
+        background: "#3f1a2b",
         confirmButtonText: "Cerrar",
       });
     }

@@ -29,7 +29,7 @@ const CrearEnlace = ({ agregarEnlace, handleClose }) => {
         ref={refEnlace}
         className="input-moda c3"
         type="text"
-        placeholder="Enlace"
+        placeholder="Ej:https:/www.mipagina.com"
       ></input>
       <p className="centrar c4">
         <input

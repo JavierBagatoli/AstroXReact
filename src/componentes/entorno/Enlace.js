@@ -9,6 +9,7 @@ const Enlace = ({ enlace, eliminarEnlace }) => {
     Swal.fire({
       title: "Enlace copiado",
       icon: "success",
+      background: "#3f1a2b",
       confirmButtonText: "Cool",
     });
   };

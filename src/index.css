@@ -223,7 +223,7 @@ textarea {
 }
 
 input::placeholder {
-  color: white;
+  color: rgb(192, 192, 192);
   font-size: 16px;
 }
 
@@ -243,7 +243,7 @@ button {
 .boton:hover,
 .boton-eliminar-tarea:hover,
 .boton-tarea:hover {
-  background-color: rgb(48, 38, 43, 1) !important;
+  background-color: rgb(33, 26, 30) !important;
 }
 
 a {
@@ -426,4 +426,9 @@ p {
 
 .espacioTop {
   margin-top: 35px;
+}
+
+label {
+  font-size: 22px;
+  transform: translateY(-10px);
 }

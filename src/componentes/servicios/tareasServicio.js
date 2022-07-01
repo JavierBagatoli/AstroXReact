@@ -54,3 +54,16 @@ export const descompletarTarea = async (tarea, email) => {
     }
   );
 };
+
+export const modificarTarea = async (tarea, email) => {
+  return await axios.put("http://localhost:3001/api/empleados/modificarTarea", {
+    mail: email,
+    tarea: {
+      titulo: tarea.titulo,
+      descripcion: tarea.descripcion,
+      fechaCreacion: tarea.fechaCreacion,
+      fechaCompletado: tarea.fechaCompletado,
+      fechaLimite: tarea.fechaLimite,
+    },
+  });
+};
