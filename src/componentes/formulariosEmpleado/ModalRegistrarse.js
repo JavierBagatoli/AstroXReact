@@ -26,13 +26,13 @@ export default function ModalRegistrarse({ handleRegistrar }) {
   return (
     <div>
       <div className="centrar espacioTop">
-        <Button
+        <button
           className="boton boton-centrar"
           color="primary"
           onClick={handleOpen}
         >
           Registrarse
-        </Button>
+        </button>
       </div>
 
       <Modal

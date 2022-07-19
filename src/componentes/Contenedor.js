@@ -234,7 +234,7 @@ const Contenedor = () => {
     apertura.map((entornoEmpleado) => window.open(entornoEmpleado.direccion));
 
     Swal.fire({
-      title: "EntornoAbierto",
+      title: "Entorno abierto",
       icon: "success",
       background: "#3f1a2b",
       color: "white",

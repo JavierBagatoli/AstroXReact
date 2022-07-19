@@ -68,6 +68,7 @@ function validarNacimiento(fecha) {
 }
 
 //29/08/2022 Javier bagatoli
+
 export const listarErrores = async (empleado) => {
   let vectorErrores = [];
 

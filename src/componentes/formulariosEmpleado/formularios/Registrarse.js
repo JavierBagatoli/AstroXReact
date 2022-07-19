@@ -15,6 +15,7 @@ const Registrarse = ({ handleRegistrar }) => {
   const passwordRef = useRef("");
   const passwordRepRef = useRef("");
 
+  //Validar entradas de formulario
   const validar = async () => {
     let vectorErrores = [];
     let dtoEmpleado = {
@@ -29,6 +30,7 @@ const Registrarse = ({ handleRegistrar }) => {
     };
 
     vectorErrores = await validacionesDeRegistro(dtoEmpleado);
+
     let idBanderaFallida = vectorErrores.findIndex(
       (bandera) => bandera !== undefined && bandera !== ""
     );
